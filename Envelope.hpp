@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Note.hpp"
+#include "Signal.hpp"
 
-class Envelope {
-
+class Envelope :public Signal{
 public:
-	virtual double callback(Note note, double actual_time) = 0;
 	virtual ~Envelope() {}
 };

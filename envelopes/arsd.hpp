@@ -13,13 +13,11 @@ namespace envelopes {
 		};
 
                 class Linear :public Envelope {
-                
                 public:
 			Arsd arsd;
                         double callback(Note note, double actual_time);
                 };
                 class Quadratic :public Envelope {
-                        
                 public:
 			Arsd arsd;
                         double callback(Note note, double actual_time);

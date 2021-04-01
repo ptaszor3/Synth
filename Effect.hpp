@@ -2,9 +2,12 @@
 
 #include "Tone.hpp"
 
-class Effect {
+class Instrument;
 
+class Effect {
 public:
-	virtual double callback(Tone* tone, double actual_time) = 0;
+	virtual double callback(Instrument* instrument, double actual_time, int effects_position) = 0;
 	virtual ~Effect() {};
 };
+
+#include "Instrument.hpp"

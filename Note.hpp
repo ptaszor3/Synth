@@ -1,7 +1,6 @@
 #pragma once
 
 class Note {
-
 public:
 	double frequency;
 	double begin_time;

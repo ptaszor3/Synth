@@ -1,6 +1,23 @@
-#pragma once
-
 #include "Instrument.hpp"
+
+double Instrument::callback_effect_prior_to(double actual_time, int effects_position) {
+	if(effects_position <= 0) {
+                if(!tone)
+                        throw Instrument_MissingTone_exception();
+                if(!envelope)
+                        throw Instrument_MissingEnvelope_exception();
+
+		double sample{0};
+                for(auto x : new_notes)
+                        sample += tone->callback(x.first, actual_time) * envelope->callback(x.first, actual_time);
+                for(auto x : old_notes)
+                        sample += tone->callback(x, actual_time) * envelope->callback(x, actual_time);
+
+                return sample;
+	}
+	else
+		return effects[effects_position - 1]->callback(this, actual_time, effects_position - 1);
+}
 
 Instrument::Instrument(Tone *c_tone, Envelope *c_envelope)
 :tone{c_tone}, envelope{c_envelope}
@@ -12,7 +29,6 @@ Id Instrument::play(Note note_to_be_played) {
 }
 
 void Instrument::stop(Id id_of_note_to_be_stopped, double actual_time) {
-
 	bool was_the_note_found{false};
 	
 	for(int i = 0; i < new_notes.size(); i++)
@@ -35,7 +51,6 @@ void Instrument::clear_notes() {
 }
 
 void Instrument::stop_notes(double actual_time) {
-	
 	while(new_notes.size()) {
 		new_notes[0].first.end_time = actual_time;
 		old_notes.push_back(new_notes[0].first);
@@ -44,17 +59,5 @@ void Instrument::stop_notes(double actual_time) {
 }
 
 double Instrument::callback(double actual_time) {
-	double sample{0};
-	
-	if(!tone)
-		throw Instrument_MissingTone_exception();
-	if(!envelope)
-		throw Instrument_MissingEnvelope_exception();
-
-	for(auto x : new_notes)
-		sample += tone->callback(x.first, actual_time) * envelope->callback(x.first, actual_time);
-	for(auto x : old_notes)
-		sample += tone->callback()(x, actual_time) * envelope->callback()(x, actual_time);
-
-	return sample * volume;
+	return callback_effect_prior_to(actual_time, effects.size());
 }

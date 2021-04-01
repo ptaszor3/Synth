@@ -1,5 +1,3 @@
-#pragma once
-
 #include "basic.hpp"
 
 namespace envelopes {

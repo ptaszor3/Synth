@@ -9,6 +9,7 @@
 #include "./tones/basic.hpp"
 #include "./envelopes/basic.hpp"
 #include "./envelopes/arsd.hpp"
+#include "./effects/VolumeControl.hpp"
 
 constexpr double pi{3.1415926535897932384626};
 
@@ -48,15 +49,16 @@ void write_WAVE(std::ostream& file, uintx_t *data, uint32_t numberOfSamples , ui
 
 int main() {
 
-	auto *envelope = new envelopes::arsd::Quadratic();
-	//auto *tone = new tones::synthesizers::Additive();
-	auto *tone = new tones::basic::Saw();
-	Instrument basic_instrument(tone, envelope);
+	envelopes::arsd::Quadratic envelope;
+	tones::basic::Saw tone;
+	effects::VolumeControl volume_control;
+	Instrument basic_instrument(&tone, &envelope);
 
-	basic_instrument.volume = 0.2;
+	basic_instrument.effects.push_back(&volume_control);
+	volume_control.volume = 0.2;
 	//tone->setHarmonic(0.5, 1);
 
-	envelope->arsd = {0.1, 0.1, 0.5, 5};
+	envelope.arsd = {0.1, 0.1, 0.5, 5};
 
         std::ofstream file("whatever.wav", std::ios::binary | std::ios::out);
         
@@ -75,7 +77,7 @@ int main() {
 				basic_instrument.play(Note(659.225, i / 44100.0, 0));
 			
 			if(i == 300000)
-				basic_instrument.clear_notes();
+				basic_instrument.stop_notes(i / 44100.0);
 		}
 
         write_WAVE(file, data, size, 44100, channels);

@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Note.hpp"
+#include "Signal.hpp"
 
-class Tone {
-
+class Tone :public Signal {
 public:
-	virtual double callback(Note note, double actual_time) = 0;
 	virtual ~Tone() {}
 };

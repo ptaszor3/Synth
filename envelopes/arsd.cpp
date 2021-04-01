@@ -1,5 +1,3 @@
-#pragma once
-
 #include "arsd.hpp"
 
 namespace envelopes {
