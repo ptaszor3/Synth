@@ -10,6 +10,7 @@
 #include "./envelopes/basic.hpp"
 #include "./envelopes/arsd.hpp"
 #include "./effects/VolumeControl.hpp"
+#include "./effects/Vibrato.hpp"
 
 constexpr double pi{3.1415926535897932384626};
 
@@ -50,13 +51,14 @@ void write_WAVE(std::ostream& file, uintx_t *data, uint32_t numberOfSamples , ui
 int main() {
 
 	envelopes::arsd::Quadratic envelope;
-	tones::basic::Saw tone;
+	tones::basic::Sin tone;
 	effects::VolumeControl volume_control;
+	effects::Vibrato vibrato{&tone, 1.0, 20.0};
 	Instrument basic_instrument(&tone, &envelope);
 
-	basic_instrument.effects.push_back(&volume_control);
+	basic_instrument.single_sample_effects.push_back(&vibrato);
+	basic_instrument.whole_sample_effects.push_back(&volume_control);
 	volume_control.volume = 0.2;
-	//tone->setHarmonic(0.5, 1);
 
 	envelope.arsd = {0.1, 0.1, 0.5, 5};
 
@@ -69,12 +71,15 @@ int main() {
         for(int i = 0; i < size; i++)
                 for(int j = 0; j < channels; j++) {
                         data[i][j] = basic_instrument.callback(i / 44100.0) * std::numeric_limits<uint16_t>::max() / 2;
+
+			Instrument::NoteId played_note[3];
 			if(i == 200000)
-				basic_instrument.play(Note(440, i / 44100.0, 0));
-			if(i == 210000)
-				basic_instrument.play(Note(554.36, i / 44100.0, 0));
-			if(i == 220000)
-				basic_instrument.play(Note(659.225, i / 44100.0, 0));
+				played_note[0] = basic_instrument.play(Note(440, i / 44100.0, 0));
+			//if(i == 210000)
+				//played_note[1] = basic_instrument.play(Note(554.36, i / 44100.0, 0));
+			//if(i == 220000) 
+				//played_note[2] = basic_instrument.play(Note(659.225, i / 44100.0, 0));
+			
 			
 			if(i == 300000)
 				basic_instrument.stop_notes(i / 44100.0);
