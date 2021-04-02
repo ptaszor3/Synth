@@ -1,12 +1,13 @@
-#pragma once
-
 #include "Vibrato.hpp"
 
-double Vibrato::callback(Instrument *instrument, double actual_time, int effects_position) { 
-	Instrument buffi{*instrument};
-	double sample_result{0};
-	for(auto& x : buffi.new_notes)
-		x.first += t
-		
+namespace effects {
+	double Vibrato::callback(Note note, Instrument *instrument, double actual_time, int effects_position) { 
+		note.frequency += max_frequency_deviation * shape->callback(Note(frequency, note.begin_time, note.end_time), actual_time);
 	
+		return instrument->callback_single_sample_effect_prior_to(note, actual_time, effects_position);
+	}
+	
+	Vibrato::Vibrato(Signal *c_shape, double c_frequency, double c_max_frequency_deviation) 
+	:shape{c_shape}, frequency{c_frequency}, max_frequency_deviation{c_max_frequency_deviation}
+	{}
 }
