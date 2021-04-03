@@ -1,7 +1,7 @@
 #include "Instrument.hpp"
 
-Instrument::Instrument(Tone *c_tone, Envelope *c_envelope)
-:tone{c_tone}, envelope{c_envelope}
+Instrument::Instrument(Tone* c_tone, Envelope* c_envelope, Timer* c_timer)
+:tone{c_tone}, envelope{c_envelope}, timer{c_timer}
 {}
 
 Instrument::NoteId Instrument::play(Note note_to_be_played) {
@@ -40,6 +40,13 @@ void Instrument::stop_notes(double_seconds duration_from_start) {
 
 double Instrument::callback(double_seconds duration_from_start) {
 	return callback_whole_sample_effect_prior_to(duration_from_start, whole_sample_effects.size());
+}
+
+double Instrument::callback() {
+	if(!timer)
+		throw Instrument_MissingTimer_exception();
+	
+	return callback_whole_sample_effect_prior_to(timer->get_time_from_start(), whole_sample_effects.size());
 }
 
 double Instrument::callback_whole_sample_effect_prior_to(double_seconds duration_from_start, int effects_position) {

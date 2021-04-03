@@ -1,4 +1,4 @@
-OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/Vibrato.o double_seconds.o
+OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/Vibrato.o double_seconds.o ./timers/StepTimer.o ./timers/RealTimeTimer.o
 
 out: $(OBJECTS)
 	g++ -o out $(OBJECTS)
@@ -13,10 +13,13 @@ double_seconds.o: double_seconds.cpp double_seconds.hpp
 ./envelopes/basic.o: ./envelopes/basic.cpp ./envelopes/basic.hpp Note.hpp Envelope.hpp
 ./envelopes/arsd.o: ./envelopes/arsd.cpp ./envelopes/arsd.hpp Note.hpp Envelope.hpp
 
+./timers/StepTimer.o: ./timers/StepTimer.hpp ./timers/StepTimer.cpp Timer.hpp
+./timers/RealTimeTimer.o: ./timers/RealTimeTimer.hpp ./timers/RealTimeTimer.cpp 
+
 ./effects/VolumeControl.o: ./effects/VolumeControl.cpp ./effects/VolumeControl.hpp
 ./effects/Vibrato.o: ./effects/Vibrato.cpp ./effects/Vibrato.hpp
 
-andrun: out
+ar: out
 	./out
 
 git: out

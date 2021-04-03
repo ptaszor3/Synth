@@ -9,6 +9,8 @@
 #include "./tones/basic.hpp"
 #include "./envelopes/basic.hpp"
 #include "./envelopes/arsd.hpp"
+#include "./timers/StepTimer.hpp"
+#include "./timers/RealTimeTimer.hpp"
 #include "./effects/VolumeControl.hpp"
 #include "./effects/Vibrato.hpp"
 #include "double_seconds.hpp"
@@ -53,9 +55,10 @@ int main() {
 
 	envelopes::arsd::Quadratic envelope;
 	tones::basic::Sin tone;
+	timers::StepTimer timer{double_seconds{1.0 / 44100.0}};
 	effects::VolumeControl volume_control;
 	//effects::Vibrato vibrato{&tone, 1.0, 20.0};
-	Instrument basic_instrument(&tone, &envelope);
+	Instrument basic_instrument(&tone, &envelope, &timer);
 
 	//basic_instrument.single_sample_effects.push_back(&vibrato);
 	basic_instrument.whole_sample_effects.push_back(&volume_control);
@@ -69,21 +72,22 @@ int main() {
         constexpr unsigned int channels = 1;
         uint16_t volatile  data[size][channels];
         
-        for(int i = 0; i < size; i++)
+       	for(int i = 0; i < size; i++)
                 for(int j = 0; j < channels; j++) {
-                        data[i][j] = basic_instrument.callback(double_seconds(i / 44100.0)) * std::numeric_limits<uint16_t>::max() / 2;
+			data[i][j] = basic_instrument.callback() * std::numeric_limits<uint16_t>::max() / 2;
 
 			Instrument::NoteId played_note[3];
 			if(i == 200000)
 				played_note[0] = basic_instrument.play(Note(440, double_seconds(i / 44100.0), 0_ds));
-			//if(i == 210000)
-				//played_note[1] = basic_instrument.play(Note(554.36, i / 44100.0, 0));
-			//if(i == 220000) 
-				//played_note[2] = basic_instrument.play(Note(659.225, i / 44100.0, 0));
-			
+			if(i == 210000)
+				played_note[1] = basic_instrument.play(Note(554.36, double_seconds(i / 44100.0), 0_ds));
+			if(i == 220000) 
+				played_note[2] = basic_instrument.play(Note(659.225, double_seconds(i / 44100.0), 0_ds));
 			
 			if(i == 300000)
 				basic_instrument.stop_notes(double_seconds(i / 44100.0));
+
+			++timer;
 		}
 
         write_WAVE(file, data, size, 44100, channels);
