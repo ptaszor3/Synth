@@ -4,10 +4,10 @@
 
 namespace tones {
 	namespace synthesizers {
-                double Additive::callback(Note note, double actual_time) {
-                        double result{sin(note.frequency * 2 * 3.14159265358979323846 * actual_time)};
+                double Additive::callback(Note note, double_seconds duration_from_start) {
+                        double result{sin(note.frequency * 2 * 3.14159265358979323846 * duration_from_start.count())};
                         for(int i = 0; i < harmonics.size(); i++)
-                                result += sin(harmonics[i].first * note.frequency * 2 * 3.14159265358979323846 * actual_time) * harmonics[i].second;
+                                result += sin(harmonics[i].first * note.frequency * 2 * 3.14159265358979323846 * duration_from_start.count()) * harmonics[i].second;
                         
                         return result / max_volume;
                 }

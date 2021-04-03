@@ -6,6 +6,6 @@ namespace effects {
 	class VolumeControl :public WholeSampleEffect {
 	public:
 		double volume = 1.0;
-		double callback(Instrument *instrument, double actual_time, int effects_position);
+		double callback(Instrument *instrument, double_seconds duration_from_start, int effects_position);
 	};
 }

@@ -10,12 +10,12 @@ Instrument::NoteId Instrument::play(Note note_to_be_played) {
 	return next_unused_id++;
 }
 
-void Instrument::stop(NoteId id_of_note_to_be_stopped, double actual_time) {
+void Instrument::stop(NoteId id_of_note_to_be_stopped, double_seconds duration_from_start) {
 	bool was_the_note_found{false};
 	
 	for(int i = 0; i < not_stopped_notes.size(); i++)
 		if(not_stopped_notes[i].first == id_of_note_to_be_stopped) {
-			all_notes[not_stopped_notes[i].second].end_time = actual_time;
+			all_notes[not_stopped_notes[i].second].end_time = duration_from_start;
 			not_stopped_notes.erase(not_stopped_notes.begin() + i);
 			was_the_note_found = true; 
 			break;
@@ -31,30 +31,30 @@ void Instrument::clear_notes() {
 	not_stopped_notes.clear();
 }
 
-void Instrument::stop_notes(double actual_time) {
+void Instrument::stop_notes(double_seconds duration_from_start) {
 	while(not_stopped_notes.size()) {
-		all_notes[not_stopped_notes[0].second].end_time = actual_time;
+		all_notes[not_stopped_notes[0].second].end_time = duration_from_start;
 		not_stopped_notes.erase(not_stopped_notes.begin());
 	}
 }
 
-double Instrument::callback(double actual_time) {
-	return callback_whole_sample_effect_prior_to(actual_time, whole_sample_effects.size());
+double Instrument::callback(double_seconds duration_from_start) {
+	return callback_whole_sample_effect_prior_to(duration_from_start, whole_sample_effects.size());
 }
 
-double Instrument::callback_whole_sample_effect_prior_to(double actual_time, int effects_position) {
+double Instrument::callback_whole_sample_effect_prior_to(double_seconds duration_from_start, int effects_position) {
 	effects_position--;
 	if(effects_position < 0) {
 		for(auto x : all_notes)
-			return callback_single_sample_effect_prior_to(x, actual_time, single_sample_effects.size());
+			return callback_single_sample_effect_prior_to(x, duration_from_start, single_sample_effects.size());
 	}
 	else
-		return whole_sample_effects[effects_position]->callback(this, actual_time, effects_position);
+		return whole_sample_effects[effects_position]->callback(this, duration_from_start, effects_position);
 
 	return 0;
 }
 
-double Instrument::callback_single_sample_effect_prior_to(Note note, double actual_time, int effects_position) {
+double Instrument::callback_single_sample_effect_prior_to(Note note, double_seconds duration_from_start, int effects_position) {
 	effects_position--;
 
 	if(effects_position < 0) {
@@ -63,10 +63,10 @@ double Instrument::callback_single_sample_effect_prior_to(Note note, double actu
 		if(!envelope)
 			throw Instrument_MissingEnvelope_exception();
 
-		return tone->callback(note, actual_time) * envelope->callback(note, actual_time);
+		return tone->callback(note, duration_from_start) * envelope->callback(note, duration_from_start);
 	}
 	else
-		return single_sample_effects[effects_position]->callback(note, this, actual_time, effects_position);
+		return single_sample_effects[effects_position]->callback(note, this, duration_from_start, effects_position);
 
 }
 

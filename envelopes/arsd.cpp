@@ -2,42 +2,42 @@
 
 namespace envelopes {
 	namespace arsd {
-                double Linear::callback(Note note, double actual_time) {
-                        if(!note.end_time and note.end_time < actual_time) {
-                                double time_from_begin = actual_time - note.begin_time;
+                double Linear::callback(Note note, double_seconds duration_from_start) {
+                        if(!note.end_time.count() and note.end_time < duration_from_start) {
+                                double_seconds time_from_begin = duration_from_start - note.begin_time;
                                 
                                 if(time_from_begin < arsd.attack)
-                                        return 1 / arsd.attack * time_from_begin;
+                                        return 1 / arsd.attack.count() * time_from_begin.count();
                                 else if(time_from_begin - arsd.attack < arsd.release)
-                                        return (arsd.attack - time_from_begin) * (1 - arsd.sustain) / arsd.release + 1;
+                                        return (arsd.attack - time_from_begin).count() * (1 - arsd.sustain) / (arsd.release).count() + 1;
                                 else 
                                         return arsd.sustain;
                         }
                         else {
-                                double time_from_end = actual_time - note.end_time;
+                                double_seconds time_from_end = duration_from_start - note.end_time;
 
                                 if(time_from_end < arsd.decay)
-                                        return arsd.sustain - arsd.sustain / arsd.decay * time_from_end;
+                                        return arsd.sustain - arsd.sustain / arsd.decay.count() * time_from_end.count();
                                 else
                                         return 0.0;
                         }
                 }
-                double Quadratic::callback(Note note, double actual_time) {
-                        if(!note.end_time and note.end_time < actual_time) {
-                                double time_from_begin = actual_time - note.begin_time;
+                double Quadratic::callback(Note note, double_seconds duration_from_start) {
+                        if(!note.end_time.count() and note.end_time < duration_from_start) {
+                                double_seconds time_from_begin = duration_from_start - note.begin_time;
                         
                                 if(time_from_begin < arsd.attack)
-                                        return time_from_begin * time_from_begin / arsd.attack / arsd.attack;
+                                        return time_from_begin.count() * time_from_begin.count() / arsd.attack.count() / arsd.attack.count();
                                 else if(time_from_begin - arsd.attack < arsd.release)
-                                        return ((1 - (time_from_begin - arsd.attack) / arsd.release) * (1 - (time_from_begin - arsd.attack) / arsd.release)) * (1 - arsd.sustain) + arsd.sustain;
+                                        return ((1.0 - (time_from_begin - arsd.attack).count() / arsd.release.count()) * (1.0 - (time_from_begin - arsd.attack).count() / arsd.release.count())) * (1.0 - arsd.sustain) + arsd.sustain;
                                 else
                                         return arsd.sustain;
                         }
                         else {
-                                double time_from_end = actual_time - note.end_time;
+                                double_seconds time_from_end = duration_from_start - note.end_time;
         
                                 if(time_from_end < arsd.decay)
-					return (1 - time_from_end / arsd.decay) * (1 - time_from_end / arsd.decay) * arsd.sustain;
+					return ((double_seconds(1.0).count() - time_from_end.count() / arsd.decay.count()) * (1.0 - time_from_end.count() / arsd.decay.count())) * arsd.sustain;
                                 else 
                                         return 0;
                         }

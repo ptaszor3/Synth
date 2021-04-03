@@ -1,5 +1,6 @@
 #pragma once
 
+#include "double_seconds.hpp"
 #include "Note.hpp"
 #include "Tone.hpp"
 #include "Envelope.hpp"
@@ -10,6 +11,7 @@
 #include <string>
 #include <utility>
 #include <exception>
+#include <chrono>
 
 class Instrument {
 public:
@@ -28,12 +30,12 @@ public:
 	Instrument(Tone *c_tone, Envelope *c_envelope);
 	
 	NoteId play(Note);
-	void stop(NoteId, double actual_time);
+	void stop(NoteId, double_seconds duration_from_start);
 	void clear_notes();
-	void stop_notes(double actual_time);
-	double callback(double actual_time);
-	double callback_whole_sample_effect_prior_to(double actual_time, int effects_position); 
-	double callback_single_sample_effect_prior_to(Note note, double actual_time, int effects_position);
+	void stop_notes(double_seconds duration_from_start);
+	double callback(double_seconds duration_from_start);
+	double callback_whole_sample_effect_prior_to(double_seconds duration_from_start, int effects_position); 
+	double callback_single_sample_effect_prior_to(Note note, double_seconds duration_from_start, int effects_position);
 	std::vector<Note>& get_all_notes();
 
 	friend WholeSampleEffect;
