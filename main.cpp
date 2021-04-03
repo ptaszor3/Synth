@@ -11,6 +11,7 @@
 #include "./envelopes/arsd.hpp"
 #include "./timers/StepTimer.hpp"
 #include "./timers/RealTimeTimer.hpp"
+#include "./inputs/QXTRInput.hpp"
 #include "./effects/VolumeControl.hpp"
 #include "./effects/Vibrato.hpp"
 #include "double_seconds.hpp"
@@ -54,28 +55,39 @@ void write_WAVE(std::ostream& file, uintx_t *data, uint32_t numberOfSamples , ui
 int main() {
 
 	envelopes::arsd::Quadratic envelope;
-	tones::basic::Sin tone;
+	tones::synthesizers::Additive tone;
 	timers::StepTimer timer{double_seconds{1.0 / 44100.0}};
 	effects::VolumeControl volume_control;
-	//effects::Vibrato vibrato{&tone, 1.0, 20.0};
+	effects::Vibrato vibrato{&tone, 1.0, 20.0};
 	Instrument basic_instrument(&tone, &envelope, &timer);
 
-	//basic_instrument.single_sample_effects.push_back(&vibrato);
+	basic_instrument.single_sample_effects.push_back(&vibrato);
 	basic_instrument.whole_sample_effects.push_back(&volume_control);
 	volume_control.volume = 0.2;
 
-	envelope.arsd = {0.1_ds, 0.1_ds, 0.5, 5_ds};
+	tone.set_harmonic(2, 0.3);
+	tone.set_harmonic(3, 0.7);
+	tone.set_harmonic(7, 0.8);
+	
+	envelope.arsd = {0.01_ds, 0.02_ds, 0.5, 0.2_ds};
+
+	inputs::QXTRInput input("test.qxtr", &basic_instrument);
+	input.export_to_instrument();
 
         std::ofstream file("whatever.wav", std::ios::binary | std::ios::out);
         
         constexpr unsigned int size = 1000000;
         constexpr unsigned int channels = 1;
         uint16_t volatile  data[size][channels];
+
+	//for(auto x : basic_instrument.get_all_notes()) 
+	//	std::cout << x.frequency << ' ' << x.begin_time.count() << ' ' << x.end_time.count() << ' ' << x.volume << std::endl;
         
+	//basic_instrument.play(Note(440, 2_ds, 3_ds, 1));
        	for(int i = 0; i < size; i++)
                 for(int j = 0; j < channels; j++) {
 			data[i][j] = basic_instrument.callback() * std::numeric_limits<uint16_t>::max() / 2;
-
+			/*
 			Instrument::NoteId played_note[3];
 			if(i == 200000)
 				played_note[0] = basic_instrument.play(Note(440, double_seconds(i / 44100.0), 0_ds));
@@ -86,10 +98,9 @@ int main() {
 			
 			if(i == 300000)
 				basic_instrument.stop_notes(double_seconds(i / 44100.0));
-
+			*/
 			++timer;
 		}
 
         write_WAVE(file, data, size, 44100, channels);
 }
-

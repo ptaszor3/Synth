@@ -6,7 +6,8 @@ Instrument::Instrument(Tone* c_tone, Envelope* c_envelope, Timer* c_timer)
 
 Instrument::NoteId Instrument::play(Note note_to_be_played) {
 	all_notes.push_back(note_to_be_played);
-	not_stopped_notes.push_back(std::pair<NoteId, unsigned int>(next_unused_id, all_notes.size() - 1));
+	if(!note_to_be_played.end_time.count())
+		not_stopped_notes.push_back(std::pair<NoteId, unsigned int>(next_unused_id, all_notes.size() - 1));
 	return next_unused_id++;
 }
 
@@ -52,8 +53,10 @@ double Instrument::callback() {
 double Instrument::callback_whole_sample_effect_prior_to(double_seconds duration_from_start, int effects_position) {
 	effects_position--;
 	if(effects_position < 0) {
+		double sample{0};
 		for(auto x : all_notes)
-			return callback_single_sample_effect_prior_to(x, duration_from_start, single_sample_effects.size());
+			sample += callback_single_sample_effect_prior_to(x, duration_from_start, single_sample_effects.size());
+		return sample;
 	}
 	else
 		return whole_sample_effects[effects_position]->callback(this, duration_from_start, effects_position);
@@ -70,11 +73,10 @@ double Instrument::callback_single_sample_effect_prior_to(Note note, double_seco
 		if(!envelope)
 			throw Instrument_MissingEnvelope_exception();
 
-		return tone->callback(note, duration_from_start) * envelope->callback(note, duration_from_start);
+		return tone->callback(note, duration_from_start) * envelope->callback(note, duration_from_start) * note.volume;
 	}
 	else
 		return single_sample_effects[effects_position]->callback(note, this, duration_from_start, effects_position);
-
 }
 
 std::vector<Note>& Instrument::get_all_notes() {

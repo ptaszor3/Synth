@@ -11,22 +11,22 @@ namespace tones {
                         
                         return result / max_volume;
                 }
-                void Additive::setHarmonic(double harmonic, double volume) {
+                void Additive::set_harmonic(double harmonic, double volume) {
                         max_volume = 1 + volume;
                         for(auto x : harmonics)
                                 max_volume += x.second;
-                        bool wasTheHarmonicAlready{false};
+                        bool was_the_harmonic_already{false};
                         for(auto& x : harmonics) {
                                 if(x.first == harmonic) {
                                         x.second = volume;
-                                        wasTheHarmonicAlready = true;
+                                        was_the_harmonic_already = true;
                                         break;
                                 }
                         }
-                        if(!wasTheHarmonicAlready)
+                        if(!was_the_harmonic_already)
                                 harmonics.push_back(std::pair<double, double>(harmonic, volume));
                 }
-                void Additive::clearHarmonics() {
+                void Additive::clear_harmonics() {
                         harmonics.clear();
                 }
         }

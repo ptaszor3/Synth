@@ -3,7 +3,10 @@
 namespace envelopes {
 	namespace arsd {
                 double Linear::callback(Note note, double_seconds duration_from_start) {
-                        if(!note.end_time.count() and note.end_time < duration_from_start) {
+			if(note.begin_time > duration_from_start) {
+				return 0.0;
+			}
+                        else if(note.end_time > duration_from_start) {
                                 double_seconds time_from_begin = duration_from_start - note.begin_time;
                                 
                                 if(time_from_begin < arsd.attack)
@@ -23,7 +26,9 @@ namespace envelopes {
                         }
                 }
                 double Quadratic::callback(Note note, double_seconds duration_from_start) {
-                        if(!note.end_time.count() and note.end_time < duration_from_start) {
+			if(note.begin_time > duration_from_start)
+				return 0.0;
+                        else if(note.end_time > duration_from_start) {
                                 double_seconds time_from_begin = duration_from_start - note.begin_time;
                         
                                 if(time_from_begin < arsd.attack)

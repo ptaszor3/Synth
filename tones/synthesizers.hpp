@@ -12,9 +12,9 @@ namespace tones {
                         std::vector<std::pair<double, double>> harmonics;
                 public:
                         double callback(Note note, double_seconds duration_from_start);
-                        void setHarmonic(double harmonic, double volume);
+                        void set_harmonic(double harmonic, double volume);
                         //void addToHarmonic(double harmonic, double volume);
-                        void clearHarmonics();
+                        void clear_harmonics();
                 };
         }
 }
