@@ -14,7 +14,7 @@
 #include "./inputs/QXTRInput.hpp"
 #include "./effects/VolumeControl.hpp"
 #include "./effects/Vibrato.hpp"
-#include "double_seconds.hpp"
+#include "DoubleSeconds.hpp"
 
 constexpr double pi{3.1415926535897932384626};
 
@@ -56,7 +56,7 @@ int main() {
 
 	envelopes::arsd::Quadratic envelope;
 	tones::synthesizers::Additive tone;
-	timers::StepTimer timer{double_seconds{1.0 / 44100.0}};
+	timers::StepTimer timer{DoubleSeconds{1.0 / 44100.0}};
 	effects::VolumeControl volume_control;
 	effects::Vibrato vibrato{&tone, 1.0, 20.0};
 	Instrument basic_instrument(&tone, &envelope, &timer);
@@ -90,14 +90,14 @@ int main() {
 			/*
 			Instrument::NoteId played_note[3];
 			if(i == 200000)
-				played_note[0] = basic_instrument.play(Note(440, double_seconds(i / 44100.0), 0_ds));
+				played_note[0] = basic_instrument.play(Note(440, DoubleSeconds(i / 44100.0), 0_ds));
 			if(i == 210000)
-				played_note[1] = basic_instrument.play(Note(554.36, double_seconds(i / 44100.0), 0_ds));
+				played_note[1] = basic_instrument.play(Note(554.36, DoubleSeconds(i / 44100.0), 0_ds));
 			if(i == 220000) 
-				played_note[2] = basic_instrument.play(Note(659.225, double_seconds(i / 44100.0), 0_ds));
+				played_note[2] = basic_instrument.play(Note(659.225, DoubleSeconds(i / 44100.0), 0_ds));
 			
 			if(i == 300000)
-				basic_instrument.stop_notes(double_seconds(i / 44100.0));
+				basic_instrument.stop_notes(DoubleSeconds(i / 44100.0));
 			*/
 			++timer;
 		}

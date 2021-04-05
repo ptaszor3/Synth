@@ -25,7 +25,7 @@ namespace inputs {
 		if(words_counter < 3)
 			throw QXTRInput_FileIsIncomplete_exception(3 - words_counter);
 
-		return Note(std::stod(words[0]), double_seconds(std::stod(words[1])), double_seconds(std::stod(words[2])), std::stod(words[3]));
+		return Note(std::stod(words[0]), DoubleSeconds(std::stod(words[1])), DoubleSeconds(std::stod(words[2])), std::stod(words[3]));
 	}
 
 	QXTRInput::QXTRInput(std::string file_name, Instrument *c_instrument) 

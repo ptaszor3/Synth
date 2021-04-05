@@ -1,7 +1,7 @@
 #include "StepTimer.hpp"
 
 namespace timers {
-	StepTimer::StepTimer(double_seconds c_step) 
+	StepTimer::StepTimer(DoubleSeconds c_step) 
 	:step{c_step}
 	{}
 	
@@ -17,7 +17,7 @@ namespace timers {
 		duration_from_start -= step;
 	}
 
-	double_seconds StepTimer::get_time_from_start() {
+	DoubleSeconds StepTimer::get_duration_from_start() {
 		return duration_from_start;
 	}
 }

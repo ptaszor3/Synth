@@ -5,7 +5,7 @@ namespace timers {
 		start = clock.now();
 	}
 
-	double_seconds RealTimeTimer::get_time_from_start() {
-		return double_seconds(clock.now() - start);
+	DoubleSeconds RealTimeTimer::get_duration_from_start() {
+		return DoubleSeconds(clock.now() - start);
 	}
 }

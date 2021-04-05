@@ -1,4 +1,4 @@
-OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/Vibrato.o double_seconds.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o
+OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/Vibrato.o DoubleSeconds.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o
 
 CPPFLAGS = -std=c++17
 
@@ -7,7 +7,7 @@ out: $(OBJECTS)
 
 main.o: main.cpp
 Instrument.o: Instrument.cpp Instrument.hpp Note.hpp Tone.hpp Envelope.hpp
-double_seconds.o: double_seconds.cpp double_seconds.hpp
+DoubleSeconds.o: DoubleSeconds.cpp DoubleSeconds.hpp
 
 ./tones/basic.o: ./tones/basic.cpp ./tones/basic.hpp Note.hpp Tone.hpp
 ./tones/synthesizers.o: ./tones/synthesizers.cpp ./tones/synthesizers.hpp Note.hpp Tone.hpp

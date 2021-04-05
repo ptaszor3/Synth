@@ -4,7 +4,7 @@
 
 namespace tones {
 	namespace synthesizers {
-                double Additive::callback(Note note, double_seconds duration_from_start) {
+                double Additive::callback(Note note, DoubleSeconds duration_from_start) {
                         double result{sin(note.frequency * 2 * 3.14159265358979323846 * duration_from_start.count())};
                         for(int i = 0; i < harmonics.size(); i++)
                                 result += sin(harmonics[i].first * note.frequency * 2 * 3.14159265358979323846 * duration_from_start.count()) * harmonics[i].second;

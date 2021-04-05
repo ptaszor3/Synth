@@ -1,9 +1,9 @@
 #pragma once
 
-#include "double_seconds.hpp"
+#include "DoubleSeconds.hpp"
 
 class Timer {
 public:
-	virtual double_seconds get_time_from_start() = 0;
+	virtual DoubleSeconds get_duration_from_start() = 0;
 	virtual ~Timer() {};
 };

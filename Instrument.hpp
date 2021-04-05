@@ -1,6 +1,6 @@
 #pragma once
 
-#include "double_seconds.hpp"
+#include "DoubleSeconds.hpp"
 #include "Note.hpp"
 #include "Tone.hpp"
 #include "Envelope.hpp"
@@ -32,15 +32,15 @@ public:
 	Instrument(Tone* c_tone = nullptr, Envelope* c_envelope = nullptr, Timer* c_timer = nullptr);
 	
 	NoteId play(Note);
-	void stop(NoteId, double_seconds duration_from_start);
+	void stop(NoteId, DoubleSeconds duration_from_start);
 	void clear_notes();
-	void stop_notes(double_seconds duration_from_start);
+	void stop_notes(DoubleSeconds duration_from_start);
 
 	[[deprecated("It's better to use the \"Timer* timer\" for governing the time in Instrument")]] 
-	double callback(double_seconds duration_from_start);
+	double callback(DoubleSeconds duration_from_start);
 	double callback();
-	double callback_whole_sample_effect_prior_to(double_seconds duration_from_start, int effects_position); 
-	double callback_single_sample_effect_prior_to(Note note, double_seconds duration_from_start, int effects_position);
+	double callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position); 
+	double callback_single_sample_effect_prior_to(Note note, DoubleSeconds duration_from_start, int effects_position);
 
 	std::vector<Note>& get_all_notes();
 

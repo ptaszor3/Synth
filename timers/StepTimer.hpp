@@ -7,14 +7,14 @@
 namespace timers {
 class StepTimer :public Timer{
 	public:
-		double_seconds duration_from_start{0_ds};
-		double_seconds step;
+		DoubleSeconds duration_from_start{0_ds};
+		DoubleSeconds step;
 
-		StepTimer(double_seconds c_step = 0_ds);
+		StepTimer(DoubleSeconds c_step = 0_ds);
 
 		void operator++();
 		void operator--();
-		double_seconds get_time_from_start();
+		DoubleSeconds get_duration_from_start();
 	};
 
 	class StepTimer_ClockDoesntProgress_exception :public std::exception {

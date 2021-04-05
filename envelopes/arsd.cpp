@@ -2,12 +2,12 @@
 
 namespace envelopes {
 	namespace arsd {
-                double Linear::callback(Note note, double_seconds duration_from_start) {
+                double Linear::callback(Note note, DoubleSeconds duration_from_start) {
 			if(note.begin_time > duration_from_start) {
 				return 0.0;
 			}
                         else if(note.end_time > duration_from_start) {
-                                double_seconds time_from_begin = duration_from_start - note.begin_time;
+                                DoubleSeconds time_from_begin = duration_from_start - note.begin_time;
                                 
                                 if(time_from_begin < arsd.attack)
                                         return 1 / arsd.attack.count() * time_from_begin.count();
@@ -17,7 +17,7 @@ namespace envelopes {
                                         return arsd.sustain;
                         }
                         else {
-                                double_seconds time_from_end = duration_from_start - note.end_time;
+                                DoubleSeconds time_from_end = duration_from_start - note.end_time;
 
                                 if(time_from_end < arsd.decay)
                                         return arsd.sustain - arsd.sustain / arsd.decay.count() * time_from_end.count();
@@ -25,11 +25,11 @@ namespace envelopes {
                                         return 0.0;
                         }
                 }
-                double Quadratic::callback(Note note, double_seconds duration_from_start) {
+                double Quadratic::callback(Note note, DoubleSeconds duration_from_start) {
 			if(note.begin_time > duration_from_start)
 				return 0.0;
                         else if(note.end_time > duration_from_start) {
-                                double_seconds time_from_begin = duration_from_start - note.begin_time;
+                                DoubleSeconds time_from_begin = duration_from_start - note.begin_time;
                         
                                 if(time_from_begin < arsd.attack)
                                         return time_from_begin.count() * time_from_begin.count() / arsd.attack.count() / arsd.attack.count();
@@ -39,10 +39,10 @@ namespace envelopes {
                                         return arsd.sustain;
                         }
                         else {
-                                double_seconds time_from_end = duration_from_start - note.end_time;
+                                DoubleSeconds time_from_end = duration_from_start - note.end_time;
         
                                 if(time_from_end < arsd.decay)
-					return ((double_seconds(1.0).count() - time_from_end.count() / arsd.decay.count()) * (1.0 - time_from_end.count() / arsd.decay.count())) * arsd.sustain;
+					return ((DoubleSeconds(1.0).count() - time_from_end.count() / arsd.decay.count()) * (1.0 - time_from_end.count() / arsd.decay.count())) * arsd.sustain;
                                 else 
                                         return 0;
                         }

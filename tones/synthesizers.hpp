@@ -11,7 +11,7 @@ namespace tones {
                         double max_volume{1};
                         std::vector<std::pair<double, double>> harmonics;
                 public:
-                        double callback(Note note, double_seconds duration_from_start);
+                        double callback(Note note, DoubleSeconds duration_from_start);
                         void set_harmonic(double harmonic, double volume);
                         //void addToHarmonic(double harmonic, double volume);
                         void clear_harmonics();

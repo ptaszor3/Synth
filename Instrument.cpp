@@ -1,4 +1,5 @@
 #include "Instrument.hpp"
+#include "Sample.hpp"
 
 Instrument::Instrument(Tone* c_tone, Envelope* c_envelope, Timer* c_timer)
 :tone{c_tone}, envelope{c_envelope}, timer{c_timer}
@@ -11,16 +12,17 @@ Instrument::NoteId Instrument::play(Note note_to_be_played) {
 	return next_unused_id++;
 }
 
-void Instrument::stop(NoteId id_of_note_to_be_stopped, double_seconds duration_from_start) {
+void Instrument::stop(NoteId id_of_note_to_be_stopped, DoubleSeconds duration_from_start) {
 	bool was_the_note_found{false};
 	
-	for(int i = 0; i < not_stopped_notes.size(); i++)
+	for(int i = 0; i < not_stopped_notes.size(); i++) {
 		if(not_stopped_notes[i].first == id_of_note_to_be_stopped) {
 			all_notes[not_stopped_notes[i].second].end_time = duration_from_start;
 			not_stopped_notes.erase(not_stopped_notes.begin() + i);
 			was_the_note_found = true; 
 			break;
 		}
+	}
 	
 	if(!was_the_note_found) {
 		throw(Instrument_BadNoteIdWhileStoppingNote_exception{});
@@ -32,14 +34,14 @@ void Instrument::clear_notes() {
 	not_stopped_notes.clear();
 }
 
-void Instrument::stop_notes(double_seconds duration_from_start) {
+void Instrument::stop_notes(DoubleSeconds duration_from_start) {
 	while(not_stopped_notes.size()) {
 		all_notes[not_stopped_notes[0].second].end_time = duration_from_start;
 		not_stopped_notes.erase(not_stopped_notes.begin());
 	}
 }
 
-double Instrument::callback(double_seconds duration_from_start) {
+double Instrument::callback(DoubleSeconds duration_from_start) {
 	return callback_whole_sample_effect_prior_to(duration_from_start, whole_sample_effects.size());
 }
 
@@ -47,13 +49,13 @@ double Instrument::callback() {
 	if(!timer)
 		throw Instrument_MissingTimer_exception();
 	
-	return callback_whole_sample_effect_prior_to(timer->get_time_from_start(), whole_sample_effects.size());
+	return callback_whole_sample_effect_prior_to(timer->get_duration_from_start(), whole_sample_effects.size());
 }
 
-double Instrument::callback_whole_sample_effect_prior_to(double_seconds duration_from_start, int effects_position) {
+double Instrument::callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position) {
 	effects_position--;
 	if(effects_position < 0) {
-		double sample{0};
+		Sample sample{0};
 		for(auto x : all_notes)
 			sample += callback_single_sample_effect_prior_to(x, duration_from_start, single_sample_effects.size());
 		return sample;
@@ -64,7 +66,7 @@ double Instrument::callback_whole_sample_effect_prior_to(double_seconds duration
 	return 0;
 }
 
-double Instrument::callback_single_sample_effect_prior_to(Note note, double_seconds duration_from_start, int effects_position) {
+double Instrument::callback_single_sample_effect_prior_to(Note note, DoubleSeconds duration_from_start, int effects_position) {
 	effects_position--;
 
 	if(effects_position < 0) {
