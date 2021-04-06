@@ -21,11 +21,11 @@ namespace outputs {
 
 	class QXTROutput_InstrumentMissing_exception :public std::exception {
 	public:
-		const char* what() noexcept {return "Export function has been invoked without instrument pointer initialized";}
+		const char* what() const noexcept {return "Export function has been invoked without instrument pointer initialized";}
 	};
 
 	class QXTROutput_FileNameMissing_exception :public std::exception {
 	public:	
-		const char* what() noexcept {return "Export function has been invoked without file name given";}
+		const char* what() const noexcept {return "Export function has been invoked without file name given";}
 	};
 }

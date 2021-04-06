@@ -12,6 +12,7 @@ namespace timers {
 	public:
 		RealTimeTimer();
 	
+		void restart();
 		DoubleSeconds get_duration_from_start();
 	};
 }

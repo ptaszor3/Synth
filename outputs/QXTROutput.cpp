@@ -2,7 +2,7 @@
 
 namespace outputs {
 	void QXTROutput::export_to_file() {
-		if(!(file_name == ""))
+		if(file_name == "")
 			throw QXTROutput_FileNameMissing_exception();
 		if(!instrument)
 			throw QXTROutput_InstrumentMissing_exception();

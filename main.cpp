@@ -12,6 +12,7 @@
 #include "./timers/StepTimer.hpp"
 #include "./timers/RealTimeTimer.hpp"
 #include "./inputs/QXTRInput.hpp"
+#include "./outputs/QXTROutput.hpp"
 #include "./effects/VolumeControl.hpp"
 #include "./effects/Vibrato.hpp"
 #include "DoubleSeconds.hpp"
@@ -56,12 +57,13 @@ int main() {
 
 	envelopes::arsd::Quadratic envelope;
 	tones::synthesizers::Additive tone;
+	tones::basic::Saw tn;
 	timers::StepTimer timer{DoubleSeconds{1.0 / 44100.0}};
 	effects::VolumeControl volume_control;
-	effects::Vibrato vibrato{&tone, 1.0, 20.0};
-	Instrument basic_instrument(&tone, &envelope, &timer);
+	//effects::Vibrato vibrato{&tone, 1.0, 20.0};
+	Instrument basic_instrument(&tn, &envelope, &timer);
 
-	basic_instrument.single_sample_effects.push_back(&vibrato);
+	//basic_instrument.single_sample_effects.push_back(&vibrato);
 	basic_instrument.whole_sample_effects.push_back(&volume_control);
 	volume_control.volume = 0.2;
 
@@ -71,7 +73,7 @@ int main() {
 	
 	envelope.arsd = {0.01_ds, 0.02_ds, 0.5, 0.2_ds};
 
-	inputs::QXTRInput input("test.qxtr", &basic_instrument);
+	inputs::QXTRInput input("trt.qxtr", &basic_instrument);
 	input.export_to_instrument();
 
         std::ofstream file("whatever.wav", std::ios::binary | std::ios::out);

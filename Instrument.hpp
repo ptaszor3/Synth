@@ -28,7 +28,6 @@ public:
 	std::vector<WholeSampleEffect*> whole_sample_effects;
 	std::vector<SingleSampleEffect*> single_sample_effects;
 
-	Instrument() = default;
 	Instrument(Tone* c_tone = nullptr, Envelope* c_envelope = nullptr, Timer* c_timer = nullptr);
 	
 	NoteId play(Note);
