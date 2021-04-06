@@ -12,6 +12,10 @@ Instrument::NoteId Instrument::play(Note note_to_be_played) {
 	return next_unused_id++;
 }
 
+Instrument::NoteId Instrument::play(Frequency frequency_to_be_played) {
+	return play(Note(frequency_to_be_played, timer->get_duration_from_start(), DoubleSeconds(0.0), 1.0));
+}
+
 void Instrument::stop(NoteId id_of_note_to_be_stopped, DoubleSeconds duration_from_start) {
 	bool was_the_note_found{false};
 	
@@ -27,6 +31,10 @@ void Instrument::stop(NoteId id_of_note_to_be_stopped, DoubleSeconds duration_fr
 	if(!was_the_note_found) {
 		throw(Instrument_BadNoteIdWhileStoppingNote_exception{});
 	}
+}
+
+void Instrument::stop(NoteId id) {
+	stop(id, timer->get_duration_from_start());
 }
 
 void Instrument::clear_notes() {

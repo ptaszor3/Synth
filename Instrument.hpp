@@ -32,7 +32,9 @@ public:
 	Instrument(Tone* c_tone = nullptr, Envelope* c_envelope = nullptr, Timer* c_timer = nullptr);
 	
 	NoteId play(Note);
+	NoteId play(Frequency);
 	void stop(NoteId, DoubleSeconds duration_from_start);
+	void stop(NoteId);
 	void clear_notes();
 	void stop_notes(DoubleSeconds duration_from_start);
 
