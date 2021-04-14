@@ -60,10 +60,10 @@ int main() {
 	tones::basic::Saw tn;
 	timers::StepTimer timer{DoubleSeconds{1.0 / 44100.0}};
 	effects::VolumeControl volume_control;
-	//effects::Vibrato vibrato{&tone, 1.0, 20.0};
+	effects::Vibrato vibrato{new tones::basic::Sin, 3, 0.1};
 	Instrument basic_instrument(&tn, &envelope, &timer);
 
-	//basic_instrument.single_sample_effects.push_back(&vibrato);
+	basic_instrument.single_sample_effects.push_back(&vibrato);
 	basic_instrument.whole_sample_effects.push_back(&volume_control);
 	volume_control.volume = 0.2;
 

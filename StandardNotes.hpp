@@ -4,26 +4,28 @@
 
 #include <cmath>
 
-constexpr Frequency A4{440};
 
-Frequency get_note_from_A4(int distance_from_A4) { //for C0 it would be -57
-	if(distance_from_A4)
-		return A4 * std::pow(2.0, distance_from_A4 / 12.0);
-	else 
-		return A4;
-}
-
-#define FN(note_name, distance_from_A4) const Frequency note_name{get_note_from_A4(distance_from_A4)}
-#define SM(note_name, second_note_name) const Frequency note_name{second_note_name}
-
-#ifndef AMERICAN_NOTATION
-	#ifndef EUROPEAN_NOTATION
-		#define AMERICAN_NOTATION
-	#endif
-#endif
-
-#ifdef AMERICAN_NOTATION
 namespace standard_notes {
+
+	constexpr Frequency A4{440};
+
+	Frequency get_note_from_A4(int distance_from_A4) { //for C0 it would be -57
+		if(distance_from_A4)
+			return A4 * std::pow(2.0, distance_from_A4 / 12.0);
+		else 
+			return A4;
+	}
+
+	#define FN(note_name, distance_from_A4) const Frequency note_name{get_note_from_A4(distance_from_A4)}
+	#define SM(note_name, second_note_name) const Frequency note_name{second_note_name}
+
+	#ifndef AMERICAN_NOTATION
+		#ifndef EUROPEAN_NOTATION
+			#define AMERICAN_NOTATION
+		#endif
+	#endif
+
+	#ifdef AMERICAN_NOTATION
 
 	FN(C0 , -57);
 	FN(C0s, -56);

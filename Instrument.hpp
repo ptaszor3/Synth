@@ -20,7 +20,7 @@ public:
 protected:
 	std::vector<Note> all_notes;
 	std::vector<std::pair<NoteId, unsigned int>> not_stopped_notes;
-	NoteId next_unused_id;
+	NoteId next_unused_id{1};
 public:
 	Tone *tone;
 	Envelope *envelope;
@@ -51,7 +51,7 @@ public:
 
 class Instrument_BadNoteIdWhileStoppingNote_exception :public std::exception {
 public:
-	const char* what() const noexcept {return "The NoteId given in \"stop_playing\()\" doesn't exist";}
+	const char* what() const noexcept {return "The NoteId given in \"stop_playing\()\" is inappropriate";}
 };
 
 class Instrument_MissingTone_exception :public std::exception {

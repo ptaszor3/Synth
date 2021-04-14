@@ -2,7 +2,8 @@
 
 namespace effects {
 	double Vibrato::callback(Note note, Instrument *instrument, DoubleSeconds duration_from_start, int effects_position) { 
-		note.frequency += max_frequency_deviation * shape->callback(Note(frequency, note.begin_time, note.end_time), duration_from_start);
+		note.frequency += max_frequency_deviation * shape->callback(Note(frequency, 0_ds, 0_ds), duration_from_start);
+		//note.frequency += 200;
 	
 		return instrument->callback_single_sample_effect_prior_to(note, duration_from_start, effects_position);
 	}

@@ -6,7 +6,7 @@ namespace envelopes {
 			if(note.begin_time > duration_from_start) {
 				return 0.0;
 			}
-                        else if(note.end_time > duration_from_start) {
+                        else if(note.end_time > duration_from_start or !note.end_time.count()) {
                                 DoubleSeconds time_from_begin = duration_from_start - note.begin_time;
                                 
                                 if(time_from_begin < arsd.attack)
@@ -28,7 +28,7 @@ namespace envelopes {
                 double Quadratic::callback(Note note, DoubleSeconds duration_from_start) {
 			if(note.begin_time > duration_from_start)
 				return 0.0;
-                        else if(note.end_time > duration_from_start) {
+                        else if(note.end_time > duration_from_start or !note.end_time.count()) {
                                 DoubleSeconds time_from_begin = duration_from_start - note.begin_time;
                         
                                 if(time_from_begin < arsd.attack)
