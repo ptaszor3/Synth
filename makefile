@@ -1,9 +1,9 @@
-OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/Vibrato.o DoubleSeconds.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./outputs/QXTROutput.o
+OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/Vibrato.o DoubleSeconds.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o
 
 CPPFLAGS = -std=c++17
 
 out: $(OBJECTS)
-	g++ -o out $(OBJECTS)
+	g++ -o out $(OBJECTS) -lasound
 
 main.o: main.cpp
 Instrument.o: Instrument.cpp Instrument.hpp Note.hpp Tone.hpp Envelope.hpp
@@ -23,6 +23,8 @@ DoubleSeconds.o: DoubleSeconds.cpp DoubleSeconds.hpp
 
 ./inputs/QXTRInput.o: ./inputs/QXTRInput.cpp ./inputs/QXTRInput.hpp
 ./outputs/QXTROutput.o: ./outputs/QXTROutput.cpp ./outputs/QXTROutput.hpp
+
+./outputs/ALSAOutputStream.o: ./outputs/ALSAOutputStream.cpp ./outputs/ALSAOutputStream.hpp
 
 ar: out
 	./out
