@@ -1,9 +1,6 @@
 #include "ALSAOutputStream.hpp"
 
 #include <string>
-#include <iostream>
-#include <iomanip>
-#warning only for debug purpuses
 
 namespace outputs {
 	void ALSAOutputStream::check_if_errorus(const int error_code) {

@@ -1,4 +1,4 @@
-OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/Vibrato.o DoubleSeconds.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o
+OBJECTS = main.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/SynchronizedVibrato.o ./effects/UnsynchronizedVibrato.o  DoubleSeconds.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o
 
 CPPFLAGS = -std=c++17
 
@@ -19,7 +19,8 @@ DoubleSeconds.o: DoubleSeconds.cpp DoubleSeconds.hpp
 ./timers/RealTimeTimer.o: ./timers/RealTimeTimer.hpp ./timers/RealTimeTimer.cpp 
 
 ./effects/VolumeControl.o: ./effects/VolumeControl.cpp ./effects/VolumeControl.hpp
-./effects/Vibrato.o: ./effects/Vibrato.cpp ./effects/Vibrato.hpp
+./effects/SynchronizedVibrato.o: ./effects/SynchronizedVibrato.cpp ./effects/SynchronizedVibrato.hpp
+./effects/UnsynchronizedVibrato.o: ./effects/UnsynchronizedVibrato.cpp ./effects/UnsynchronizedVibrato.hpp
 
 ./inputs/QXTRInput.o: ./inputs/QXTRInput.cpp ./inputs/QXTRInput.hpp
 ./outputs/QXTROutput.o: ./outputs/QXTROutput.cpp ./outputs/QXTROutput.hpp
