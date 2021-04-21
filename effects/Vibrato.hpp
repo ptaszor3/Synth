@@ -8,10 +8,10 @@ namespace effects {
 	class Vibrato :public SingleSampleEffect {
 	public:
 		Signal *shape;
-		double frequency{1.0};
-		double max_frequency_deviation{1.0};
+		double frequency;
+		DoubleSeconds max_time_deviation;
 		double callback(Note note, Instrument *instrument, DoubleSeconds duration_from_start, int effects_position);
 
-		Vibrato(Signal *c_shape, double c_frequency, double c_max_frequency_deviation);
+		Vibrato(Signal *c_shape, double c_frequency, DoubleSeconds c_max_time_deviation);
 	};
 }
