@@ -49,18 +49,18 @@ void Instrument::stop_notes(DoubleSeconds duration_from_start) {
 	}
 }
 
-double Instrument::callback(DoubleSeconds duration_from_start) {
+Sample Instrument::callback(DoubleSeconds duration_from_start) {
 	return callback_whole_sample_effect_prior_to(duration_from_start, whole_sample_effects.size());
 }
 
-double Instrument::callback() {
+Sample Instrument::callback() {
 	if(!timer)
 		throw Instrument_MissingTimer_exception();
 	
 	return callback_whole_sample_effect_prior_to(timer->get_duration_from_start(), whole_sample_effects.size());
 }
 
-double Instrument::callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position) {
+Sample Instrument::callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position) {
 	effects_position--;
 	if(effects_position < 0) {
 		Sample sample{0};
@@ -74,7 +74,7 @@ double Instrument::callback_whole_sample_effect_prior_to(DoubleSeconds duration_
 	return 0;
 }
 
-double Instrument::callback_single_sample_effect_prior_to(Note note, DoubleSeconds duration_from_start, int effects_position) {
+Sample Instrument::callback_single_sample_effect_prior_to(Note note, DoubleSeconds duration_from_start, int effects_position) {
 	effects_position--;
 
 	if(effects_position < 0) {

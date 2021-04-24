@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DoubleSeconds.hpp"
+#include "Sample.hpp"
 #include "Note.hpp"
 #include "Tone.hpp"
 #include "Envelope.hpp"
@@ -37,11 +38,10 @@ public:
 	void clear_notes();
 	void stop_notes(DoubleSeconds duration_from_start);
 
-	[[deprecated("It's better to use the \"Timer* timer\" for governing the time in Instrument")]] 
-	double callback(DoubleSeconds duration_from_start);
-	double callback();
-	double callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position); 
-	double callback_single_sample_effect_prior_to(Note note, DoubleSeconds duration_from_start, int effects_position);
+	Sample callback(DoubleSeconds duration_from_start);
+	Sample callback();
+	Sample callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position); 
+	Sample callback_single_sample_effect_prior_to(Note note, DoubleSeconds duration_from_start, int effects_position);
 
 	std::vector<Note>& get_all_notes();
 
