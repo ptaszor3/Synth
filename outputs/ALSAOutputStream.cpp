@@ -1,7 +1,5 @@
 #include "ALSAOutputStream.hpp"
 
-#include <string>
-
 namespace outputs {
 	void ALSAOutputStream::check_if_errorus(const int error_code) {
 		if(error_code < 0)
@@ -24,7 +22,6 @@ namespace outputs {
 		check_if_errorus(snd_pcm_sw_params_malloc(&software_parameters));
 		check_if_errorus(snd_pcm_sw_params_current(stream_handle, software_parameters));
 		check_if_errorus(snd_pcm_sw_params_set_start_threshold(stream_handle, software_parameters, buffer_size - period_size));
-		//check_if_errorus(snd_pcm_sw_params_set_avail_min(stream_handle, software_parameters, period_size));
 		check_if_errorus(snd_pcm_sw_params(stream_handle, software_parameters));
 		check_if_errorus(snd_pcm_prepare(stream_handle));
 
@@ -57,7 +54,6 @@ namespace outputs {
 			int error_code;
 			error_code = snd_pcm_writei(stream_handle, samples, period_size);
 			duration_to_last_write += DoubleSeconds(error_code * (1.0 / rate));
-			//std::cout << std::setprecision(10) << std::fixed << instrument->timer->get_duration_from_start().count() << std::endl;
 
 			if(error_code == -EAGAIN)
 				continue;
