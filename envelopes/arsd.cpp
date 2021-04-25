@@ -2,7 +2,7 @@
 
 namespace envelopes {
 	namespace arsd {
-                double Linear::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Linear::callback(Note note, DoubleSeconds duration_from_start) {
 			if(note.begin_time > duration_from_start) {
 				return 0.0;
 			}
@@ -25,7 +25,7 @@ namespace envelopes {
                                         return 0.0;
                         }
                 }
-                double Quadratic::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Quadratic::callback(Note note, DoubleSeconds duration_from_start) {
 			if(note.begin_time > duration_from_start)
 				return 0.0;
                         else if(note.end_time > duration_from_start or !note.end_time.count()) {

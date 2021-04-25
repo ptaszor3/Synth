@@ -4,31 +4,31 @@
 
 namespace tones {
         namespace basic {
-                double Sin::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Sin::callback(Note note, DoubleSeconds duration_from_start) {
                         return sin(duration_from_start.count() * note.frequency * 2.0 * 3.14159265358979323846);
                 }
-                double Tri::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Tri::callback(Note note, DoubleSeconds duration_from_start) {
                         double time_from_beggining_of_cycle = fmod(duration_from_start.count(), 1.0 / note.frequency);
                         if(time_from_beggining_of_cycle < (1.0 / note.frequency / 2.0))
                                 return 4.0 * note.frequency * time_from_beggining_of_cycle - 1.0;
                         else
                                 return -4.0 * note.frequency * (time_from_beggining_of_cycle - 1 / (2 * note.frequency)) + 1.0;
                 }
-                double Saw::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Saw::callback(Note note, DoubleSeconds duration_from_start) {
                         double time_from_beggining_of_cycle = fmod(duration_from_start.count(), 1.0 / note.frequency);
                         return 2.0 * note.frequency * time_from_beggining_of_cycle - 1.0;
                 }
-                double Sqr::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Sqr::callback(Note note, DoubleSeconds duration_from_start) {
                         double time_from_beggining_of_cycle = fmod(duration_from_start.count(), 1.0 / note.frequency);
                         if(time_from_beggining_of_cycle < 1.0 / note.frequency / 2.0)
                                 return 1.0;
                         else 
                                 return -1.0;
                 }
-                double Silence::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Silence::callback(Note note, DoubleSeconds duration_from_start) {
                         return 0;
                 }
-                double Rect::callback(Note note, DoubleSeconds duration_from_start) {
+                Sample Rect::callback(Note note, DoubleSeconds duration_from_start) {
                         double time_from_beggining_of_cycle = fmod(duration_from_start.count(), 1.0 / note.frequency);
                         if(time_from_beggining_of_cycle < 1.0 / note.frequency * infill)
                                 return 1.0;

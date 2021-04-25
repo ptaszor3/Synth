@@ -15,12 +15,12 @@ namespace envelopes {
                 class Linear :public Envelope {
                 public:
 			Arsd arsd;
-                        double callback(Note note, DoubleSeconds duration_from_start);
+                        Sample callback(Note note, DoubleSeconds duration_from_start);
                 };
                 class Quadratic :public Envelope {
                 public:
 			Arsd arsd;
-                        double callback(Note note, DoubleSeconds duration_from_start);
+                        Sample callback(Note note, DoubleSeconds duration_from_start);
                 };
         }
 }

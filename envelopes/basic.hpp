@@ -6,7 +6,7 @@ namespace envelopes {
         namespace basic {
                 class NoEnvelope :public Envelope {
                 public:
-                        double callback(Note note, DoubleSeconds duration_from_start);
+                        Sample callback(Note note, DoubleSeconds duration_from_start);
                 };
         }
 }
