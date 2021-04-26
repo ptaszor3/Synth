@@ -8,8 +8,10 @@
 #include "Timer.hpp"
 #include "WholeSampleEffect.hpp"
 #include "SingleSampleEffect.hpp"
+#include "AuxiliarySampleData.hpp"
 
 #include <vector>
+#include <map>
 #include <string>
 #include <utility>
 #include <exception>
@@ -20,7 +22,8 @@ public:
 	using NoteId = unsigned int;
 protected:
 	std::vector<Note> all_notes;
-	std::vector<std::pair<NoteId, unsigned int>> not_stopped_notes;
+	std::vector<std::pair<AuxiliarySampleData, unsigned int>> hearable_notes;
+	std::map<NoteId, unsigned int> not_stopped_notes;
 	NoteId next_unused_id{1};
 public:
 	Tone *tone;
@@ -41,9 +44,9 @@ public:
 	Sample callback(DoubleSeconds duration_from_start);
 	Sample callback();
 	Sample callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position); 
-	Sample callback_single_sample_effect_prior_to(Note note, DoubleSeconds duration_from_start, int effects_position);
+	Sample callback_single_sample_effect_prior_to(Note note, AuxiliarySampleData sample_data, DoubleSeconds duration_from_start, int effects_position);
 
-	std::vector<Note>& get_all_notes();
+	std::vector<Note> get_all_notes();
 
 	friend WholeSampleEffect;
 	friend SingleSampleEffect;

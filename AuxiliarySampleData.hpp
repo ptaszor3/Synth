@@ -7,4 +7,4 @@ struct AuxiliarySampleData {
 	double volume;
 	Sample value;
 	DoubleSeconds time_offset;
-}
+};
