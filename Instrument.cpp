@@ -7,8 +7,8 @@ Instrument::Instrument(Tone* c_tone, Envelope* c_envelope, Timer* c_timer)
 
 Instrument::NoteId Instrument::play(Note note_to_be_played) {
 	all_notes.push_back(note_to_be_played);
-	hearable_notes.push_back(std::pair<AuxiliarySampleData, unsigned int>(AuxiliarySampleData(), all_notes.size() - 1));
-	not_stopped_notes.insert({next_unused_id, static_cast<unsigned int>(all_notes.size() - 1)});
+	hearable_notes.insert({all_notes.size() - 1, AuxiliarySampleData()});
+	not_stopped_notes.insert({next_unused_id, all_notes.size() - 1});
 
 	return next_unused_id++;
 }
@@ -27,6 +27,7 @@ void Instrument::stop(NoteId id_of_note_to_be_stopped, DoubleSeconds duration_fr
 	}
 
 	all_notes[buffer].end_time = duration_from_start;
+	hearable_notes[buffer].duration_from_start_note_is_over = envelope->get_time_note_is_over(all_notes[buffer]);
 	not_stopped_notes.erase(id_of_note_to_be_stopped);
 }
 
@@ -41,11 +42,11 @@ void Instrument::clear_notes() {
 	next_unused_id = 1;
 }
 
-void Instrument::stop_notes(DoubleSeconds duration_from_start) {
+void Instrument::stop_notes() {
 	for(auto& not_stopped_note : not_stopped_notes) {
-		all_notes[not_stopped_note.second].end_time = duration_from_start;
+		stop(not_stopped_note.first);
 	}
-	not_stopped_notes.clear();
+	not_stopped_notes.clear();		//Potential Error in this function
 }
 
 Sample Instrument::callback(DoubleSeconds duration_from_start) {
@@ -63,8 +64,19 @@ Sample Instrument::callback_whole_sample_effect_prior_to(DoubleSeconds duration_
 	effects_position--;
 	if(effects_position < 0) {
 		Sample sample{0};
-		for(auto x : hearable_notes)
-			sample += callback_single_sample_effect_prior_to(all_notes[x.second], x.first, duration_from_start, single_sample_effects.size());
+		std::vector<unsigned int> indexes_to_be_erased;
+		for(auto& x : hearable_notes) {
+			if(x.second.duration_from_start_note_is_over != 0_ds and x.second.duration_from_start_note_is_over < duration_from_start) {
+				indexes_to_be_erased.push_back(x.first);
+				continue;
+			}
+
+			sample += callback_single_sample_effect_prior_to(all_notes[x.first], x.second, duration_from_start, single_sample_effects.size());
+		}
+		for(auto index : indexes_to_be_erased) {
+			hearable_notes.erase(index);
+		}
+
 		return sample;
 	}
 	else
@@ -73,7 +85,7 @@ Sample Instrument::callback_whole_sample_effect_prior_to(DoubleSeconds duration_
 	return 0;
 }
 
-Sample Instrument::callback_single_sample_effect_prior_to(Note note, AuxiliarySampleData sample_data, DoubleSeconds duration_from_start, int effects_position) {
+Sample Instrument::callback_single_sample_effect_prior_to(Note note, AuxiliarySampleData& sample_data, DoubleSeconds duration_from_start, int effects_position) {
 	effects_position--;
 
 	if(effects_position < 0) {

@@ -16,11 +16,13 @@ namespace envelopes {
                 public:
 			Arsd arsd;
                         Sample callback(Note note, DoubleSeconds duration_from_start);
+			DoubleSeconds get_time_note_is_over(Note);
                 };
                 class Quadratic :public Envelope {
                 public:
 			Arsd arsd;
                         Sample callback(Note note, DoubleSeconds duration_from_start);
+			DoubleSeconds get_time_note_is_over(Note);
                 };
         }
 }

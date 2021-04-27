@@ -25,6 +25,11 @@ namespace envelopes {
                                         return 0.0;
                         }
                 }
+		DoubleSeconds Linear::get_time_note_is_over(Note note) {
+			if(note.end_time == 0_ds)
+				throw Envelope::NoteDoesntEnd_exception();
+			return note.end_time + arsd.decay;
+		}
                 Sample Quadratic::callback(Note note, DoubleSeconds duration_from_start) {
 			if(note.begin_time > duration_from_start)
 				return 0.0;
@@ -47,6 +52,11 @@ namespace envelopes {
                                         return 0;
                         }
                 }
+		DoubleSeconds Quadratic::get_time_note_is_over(Note note) {
+			if(note.end_time == 0_ds)
+				throw Envelope::NoteDoesntEnd_exception();
+			return note.end_time + arsd.decay;
+		}
         }
 }
 

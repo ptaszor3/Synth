@@ -9,7 +9,7 @@ class Instrument;
 
 class SingleSampleEffect {
 public:
-	virtual Sample callback(Note note, AuxiliarySampleData sample_data, Instrument *instrument, DoubleSeconds duration_from_start, int effects_position) = 0;
+	virtual Sample callback(Note note, AuxiliarySampleData& sample_data, Instrument *instrument, DoubleSeconds duration_from_start, int effects_position) = 0;
 	virtual ~SingleSampleEffect() {};
 };
 

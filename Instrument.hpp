@@ -22,7 +22,7 @@ public:
 	using NoteId = unsigned int;
 protected:
 	std::vector<Note> all_notes;
-	std::vector<std::pair<AuxiliarySampleData, unsigned int>> hearable_notes;
+	std::map<unsigned int, AuxiliarySampleData> hearable_notes;
 	std::map<NoteId, unsigned int> not_stopped_notes;
 	NoteId next_unused_id{1};
 public:
@@ -39,12 +39,12 @@ public:
 	void stop(NoteId, DoubleSeconds duration_from_start);
 	void stop(NoteId);
 	void clear_notes();
-	void stop_notes(DoubleSeconds duration_from_start);
+	void stop_notes();
 
 	Sample callback(DoubleSeconds duration_from_start);
 	Sample callback();
 	Sample callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position); 
-	Sample callback_single_sample_effect_prior_to(Note note, AuxiliarySampleData sample_data, DoubleSeconds duration_from_start, int effects_position);
+	Sample callback_single_sample_effect_prior_to(Note note, AuxiliarySampleData& sample_data, DoubleSeconds duration_from_start, int effects_position);
 
 	std::vector<Note> get_all_notes();
 

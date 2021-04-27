@@ -12,7 +12,7 @@ namespace effects {
 		Signal *shape;
 		Frequency frequency;
 		DoubleSeconds max_time_deviation;
-		Sample callback(Note note, AuxiliarySampleData sample_data, Instrument *instrument, DoubleSeconds duration_from_start, int effects_position);
+		Sample callback(Note note, AuxiliarySampleData& sample_data, Instrument *instrument, DoubleSeconds duration_from_start, int effects_position);
 
 		UnsynchronizedVibrato(Signal *c_shape, Frequency c_frequency, DoubleSeconds c_max_time_deviation);
 	};
