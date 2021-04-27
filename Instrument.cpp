@@ -46,7 +46,7 @@ void Instrument::stop_notes() {
 	for(auto& not_stopped_note : not_stopped_notes) {
 		stop(not_stopped_note.first);
 	}
-	not_stopped_notes.clear();		//Potential Error in this function
+	not_stopped_notes.clear();	
 }
 
 Sample Instrument::callback(DoubleSeconds duration_from_start) {
@@ -94,7 +94,7 @@ Sample Instrument::callback_single_sample_effect_prior_to(Note note, AuxiliarySa
 		if(!envelope)
 			throw Instrument_MissingEnvelope_exception();
 
-		return tone->callback(note, duration_from_start) * envelope->callback(note, duration_from_start) * note.volume;
+		return tone->callback(note, duration_from_start + sample_data.time_offset) * envelope->callback(note, duration_from_start) * note.volume;
 	}
 	else
 		return single_sample_effects[effects_position]->callback(note, sample_data, this, duration_from_start, effects_position);
