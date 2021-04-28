@@ -23,7 +23,7 @@ void Instrument::stop(NoteId id_of_note_to_be_stopped, DoubleSeconds duration_fr
 		buffer = not_stopped_notes.at(id_of_note_to_be_stopped);
 	}
 	catch(std::out_of_range) {
-		throw(Instrument_BadNoteIdWhileStoppingNote_exception{});
+		throw(BadNoteIdWhileStoppingNote_exception{});
 	}
 
 	all_notes[buffer].end_time = duration_from_start;
@@ -49,13 +49,24 @@ void Instrument::stop_notes() {
 	not_stopped_notes.clear();	
 }
 
+void Instrument::reset() {
+	if(not_stopped_notes.size())
+		throw ResetWhileNotesNotStopped_exception();
+
+	hearable_notes.clear();
+
+	for(int i = 0; i < all_notes.size(); i++) {
+		hearable_notes.insert({i, AuxiliarySampleData()});
+	}
+}
+
 Sample Instrument::callback(DoubleSeconds duration_from_start) {
 	return callback_whole_sample_effect_prior_to(duration_from_start, whole_sample_effects.size());
 }
 
 Sample Instrument::callback() {
 	if(!timer)
-		throw Instrument_MissingTimer_exception();
+		throw MissingTimer_exception();
 	
 	return callback_whole_sample_effect_prior_to(timer->get_duration_from_start(), whole_sample_effects.size());
 }
@@ -90,9 +101,9 @@ Sample Instrument::callback_single_sample_effect_prior_to(Note note, AuxiliarySa
 
 	if(effects_position < 0) {
 		if(!tone)
-			throw Instrument_MissingTone_exception();
+			throw MissingTone_exception();
 		if(!envelope)
-			throw Instrument_MissingEnvelope_exception();
+			throw MissingEnvelope_exception();
 
 		return tone->callback(note, duration_from_start + sample_data.time_offset) * envelope->callback(note, duration_from_start) * note.volume;
 	}

@@ -40,6 +40,7 @@ public:
 	void stop(NoteId);
 	void clear_notes();
 	void stop_notes();
+	void reset();
 
 	Sample callback(DoubleSeconds duration_from_start);
 	Sample callback();
@@ -50,24 +51,29 @@ public:
 
 	friend WholeSampleEffect;
 	friend SingleSampleEffect;
+
+	class ResetWhileNotesNotStopped_exception {
+	public:
+		const char* what() const noexcept {return "Instrument has been reset while notes were still playing.";}
+	};
+	class BadNoteIdWhileStoppingNote_exception :public std::exception {
+	public:
+		const char* what() const noexcept {return "The NoteId given in \"stop_playing\()\" is inappropriate";}
+	};
+
+	class MissingTone_exception :public std::exception {
+	public:
+		const char* what() const noexcept {return "Sample is ordered with no tone specified";}
+	};
+
+	class MissingEnvelope_exception :public std::exception {
+	public:
+		const char* what() const noexcept {return "Sample is ordered with no envelope specified";}
+	};
+
+	class MissingTimer_exception :public std::exception {
+	public:
+		const char* what() const noexcept {return "Sample is ordered with no timer specified";}
+	};
 };
 
-class Instrument_BadNoteIdWhileStoppingNote_exception :public std::exception {
-public:
-	const char* what() const noexcept {return "The NoteId given in \"stop_playing\()\" is inappropriate";}
-};
-
-class Instrument_MissingTone_exception :public std::exception {
-public:
-	const char* what() const noexcept {return "Sample is ordered with no tone specified";}
-};
-
-class Instrument_MissingEnvelope_exception :public std::exception {
-public:
-	const char* what() const noexcept {return "Sample is ordered with no envelope specified";}
-};
-
-class Instrument_MissingTimer_exception :public std::exception {
-public:
-	const char* what() const noexcept {return "Sample is ordered with no timer specified";}
-};

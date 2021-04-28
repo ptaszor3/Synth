@@ -1,14 +1,10 @@
-OBJECTS = main.o DoubleSeconds.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/SynchronizedVibrato.o ./effects/UnsynchronizedVibrato.o ./effects/SynchronizedTremolo.o ./effects/UnsynchronizedTremolo.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o
+OBJECTS = main.o DoubleSeconds.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/SynchronizedVibrato.o ./effects/UnsynchronizedVibrato.o ./effects/SynchronizedTremolo.o ./effects/UnsynchronizedTremolo.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./inputs/sfmlKeyboardInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o ./outputs/WAVOutput.o
 
 CPPFLAGS = -std=c++17
 
 lib: $(OBJECTS)
 	ar rvs libsynth.a $(OBJECTS)
 
-out: $(OBJECTS)
-	g++ -o out $(OBJECTS) -lasound
-
-main.o: main.cpp
 Instrument.o: Instrument.cpp Instrument.hpp Note.hpp Tone.hpp Envelope.hpp
 DoubleSeconds.o: DoubleSeconds.cpp DoubleSeconds.hpp
 
@@ -28,14 +24,13 @@ DoubleSeconds.o: DoubleSeconds.cpp DoubleSeconds.hpp
 ./effects/UnsynchronizedTremolo.o: ./effects/UnsynchronizedTremolo.cpp ./effects/UnsynchronizedTremolo.hpp
 
 ./inputs/QXTRInput.o: ./inputs/QXTRInput.cpp ./inputs/QXTRInput.hpp
+./inputs/sfmlKeyboardInput.o: ./inputs/sfmlKeyboardInput.cpp ./inputs/sfmlKeyboardInput.hpp
+
 ./outputs/QXTROutput.o: ./outputs/QXTROutput.cpp ./outputs/QXTROutput.hpp
-
 ./outputs/ALSAOutputStream.o: ./outputs/ALSAOutputStream.cpp ./outputs/ALSAOutputStream.hpp
+./outputs/WAVOutput.o: ./outputs/WAVOutput.cpp ./outputs/WAVOutput.hpp
 
-ar: out
-	./out
-
-git: out
+git: libsynth.a
 	make clean
 	git add .
 	git commit
@@ -43,7 +38,7 @@ git: out
 
 cc:
 	clear
-	make out
+	make lib
 
 clean: 
 	rm *.o
