@@ -1,4 +1,4 @@
-OBJECTS = main.o DoubleSeconds.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/SynchronizedVibrato.o ./effects/UnsynchronizedVibrato.o ./effects/SynchronizedTremolo.o ./effects/UnsynchronizedTremolo.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./inputs/sfmlKeyboardInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o ./outputs/WAVOutput.o
+OBJECTS = DoubleSeconds.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/SynchronizedVibrato.o ./effects/UnsynchronizedVibrato.o ./effects/SynchronizedTremolo.o ./effects/UnsynchronizedTremolo.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./inputs/sfmlKeyboardInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o ./outputs/WAVOutput.o
 
 CPPFLAGS = -std=c++17
 
