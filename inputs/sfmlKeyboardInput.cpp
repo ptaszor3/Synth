@@ -1,9 +1,5 @@
 #include "sfmlKeyboardInput.hpp"
 #include "../StandardNotes.hpp"
-//#include "../Synth/outputs/QXTROutput.hpp"
-
-#include <iostream>
-#warning Iostream is included only temporarly
 
 namespace inputs {
 	sfmlKeyboardInput::sfmlKeyboardInput(Instrument* c_instrument) 
@@ -11,12 +7,6 @@ namespace inputs {
 	}
 
 	void sfmlKeyboardInput::update() {
-		/*if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P)) {
-			outputs::QXTROutput output(instrument, "output.qxtr");
-			output.export_to_file();
-			std::cout << "File has been written to" << std::endl;
-		}*/
-
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
 			if(!Z)
 				Z = instrument->play(standard_notes::C4);

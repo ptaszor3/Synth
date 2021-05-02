@@ -1,4 +1,4 @@
-OBJECTS = DoubleSeconds.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/SynchronizedVibrato.o ./effects/UnsynchronizedVibrato.o ./effects/SynchronizedTremolo.o ./effects/UnsynchronizedTremolo.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./inputs/sfmlKeyboardInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o ./outputs/WAVOutput.o
+OBJECTS = DoubleSeconds.o Instrument.o ./tones/basic.o ./tones/synthesizers.o ./envelopes/basic.o ./envelopes/arsd.o ./effects/VolumeControl.o ./effects/SynchronizedVibrato.o ./effects/UnsynchronizedVibrato.o ./effects/SynchronizedTremolo.o ./effects/UnsynchronizedTremolo.o ./timers/StepTimer.o ./timers/RealTimeTimer.o ./inputs/QXTRInput.o ./inputs/sfmlKeyboardInput.o ./inputs/MIDIInput.o ./outputs/QXTROutput.o ./outputs/ALSAOutputStream.o ./outputs/WAVOutput.o
 
 CPPFLAGS = -std=c++17
 
@@ -25,6 +25,7 @@ DoubleSeconds.o: DoubleSeconds.cpp DoubleSeconds.hpp
 
 ./inputs/QXTRInput.o: ./inputs/QXTRInput.cpp ./inputs/QXTRInput.hpp
 ./inputs/sfmlKeyboardInput.o: ./inputs/sfmlKeyboardInput.cpp ./inputs/sfmlKeyboardInput.hpp
+./inputs/MIDIInput.o: ./inputs/MIDIInput.cpp ./inputs/MIDIInput.hpp
 
 ./outputs/QXTROutput.o: ./outputs/QXTROutput.cpp ./outputs/QXTROutput.hpp
 ./outputs/ALSAOutputStream.o: ./outputs/ALSAOutputStream.cpp ./outputs/ALSAOutputStream.hpp
