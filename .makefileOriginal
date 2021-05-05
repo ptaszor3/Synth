@@ -1,0 +1,49 @@
+OBJECTS = ./build/DoubleSeconds.o ./build/Instrument.o ./build/StandardNotes.o ./build/tones/basic.o ./build/tones/synthesizers.o ./build/envelopes/basic.o ./build/envelopes/arsd.o ./build/effects/VolumeControl.o ./build/effects/SynchronizedVibrato.o ./build/effects/UnsynchronizedVibrato.o ./build/effects/SynchronizedTremolo.o ./build/effects/UnsynchronizedTremolo.o ./build/timers/StepTimer.o ./build/timers/RealTimeTimer.o ./build/inputs/QXTRInput.o ./build/inputs/sfmlKeyboardInput.o ./build/inputs/MIDIInput.o ./build/outputs/QXTROutput.o ./build/outputs/ALSAOutputStream.o ./build/outputs/WAVOutput.o
+
+CPPFLAGS = -std=c++17
+
+lib: $(OBJECTS)
+	ar rvs libsynth.a $(OBJECTS)
+
+./build/%.o: ./source/%.cpp ./include/%.hpp
+	g++ $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+
+./build/DoubleSeconds.o: ./source/DoubleSeconds.cpp ./include/DoubleSeconds.hpp
+
+./build/tones/basic.o: ./source/tones/basic.cpp ./include/tones/basic.hpp ./include/Note.hpp ./include/Tone.hpp
+./build/tones/synthesizers.o: ./source/tones/synthesizers.cpp ./include/tones/synthesizers.hpp ./include/Note.hpp ./include/Tone.hpp
+
+./build/envelopes/basic.o: ./source/envelopes/basic.cpp ./include/envelopes/basic.hpp ./include/Note.hpp ./include/Envelope.hpp
+./build/envelopes/arsd.o: ./source/envelopes/arsd.cpp ./include/envelopes/arsd.hpp ./include/Note.hpp ./include/Envelope.hpp
+
+./build/timers/StepTimer.o: ./include/timers/StepTimer.hpp ./source/timers/StepTimer.cpp ./include/Timer.hpp
+./build/timers/RealTimeTimer.o: ./include/timers/RealTimeTimer.hpp ./source/timers/RealTimeTimer.cpp 
+
+./build/effects/VolumeControl.o: ./source/effects/VolumeControl.cpp ./include/effects/VolumeControl.hpp
+./build/effects/SynchronizedVibrato.o: ./source/effects/SynchronizedVibrato.cpp ./include/effects/SynchronizedVibrato.hpp
+./build/effects/UnsynchronizedVibrato.o: ./source/effects/UnsynchronizedVibrato.cpp ./include/effects/UnsynchronizedVibrato.hpp
+./build/effects/SynchronizedTremolo.o: ./source/effects/SynchronizedTremolo.cpp ./include/effects/SynchronizedTremolo.hpp
+./build/effects/UnsynchronizedTremolo.o: ./source/effects/UnsynchronizedTremolo.cpp ./include/effects/UnsynchronizedTremolo.hpp
+
+./build/inputs/QXTRInput.o: ./source/inputs/QXTRInput.cpp ./include/inputs/QXTRInput.hpp
+./build/inputs/sfmlKeyboardInput.o: ./source/inputs/sfmlKeyboardInput.cpp ./include/inputs/sfmlKeyboardInput.hpp
+./build/inputs/MIDIInput.o: ./source/inputs/MIDIInput.cpp ./include/inputs/MIDIInput.hpp
+
+./build/outputs/QXTROutput.o: ./source/outputs/QXTROutput.cpp ./include/outputs/QXTROutput.hpp
+./build/outputs/ALSAOutputStream.o: ./source/outputs/ALSAOutputStream.cpp ./include/outputs/ALSAOutputStream.hpp
+./build/outputs/WAVOutput.o: ./source/outputs/WAVOutput.cpp ./include/outputs/WAVOutput.hpp
+
+git: libsynth.a
+	make clean
+	git add .
+	git commit
+	git push
+
+cc:
+	clear
+	make lib
+
+clean: 
+	rm ./build/*.o
+	rm ./build/*/*.o
+	rm libsynth.a

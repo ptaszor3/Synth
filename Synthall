@@ -1,0 +1,37 @@
+#include "include/AuxiliarySampleData.hpp"
+#include "include/DoubleSeconds.hpp"
+#include "include/Envelope.hpp"
+#include "include/Frequency.hpp"
+#include "include/Instrument.hpp"
+#include "include/Note.hpp"
+#include "include/NoteInput.hpp"
+#include "include/Sample.hpp"
+#include "include/Signal.hpp"
+#include "include/SingleSampleEffect.hpp"
+#include "include/StandardNotes.hpp"
+#include "include/Timer.hpp"
+#include "include/Tone.hpp"
+#include "include/WholeSampleEffect.hpp"
+
+#include "include/effects/SynchronizedTremolo.hpp"
+#include "include/effects/SynchronizedVibrato.hpp"
+#include "include/effects/UnsynchronizedTremolo.hpp"
+#include "include/effects/UnsynchronizedVibrato.hpp"
+#include "include/effects/VolumeControl.hpp"
+
+#include "include/envelopes/arsd.hpp"
+#include "include/envelopes/basic.hpp"
+
+#include "include/inputs/MIDIInput.hpp"
+#include "include/inputs/QXTRInput.hpp"
+#include "include/inputs/sfmlKeyboardInput.hpp"
+
+#include "include/outputs/ALSAOutputStream.hpp"
+#include "include/outputs/QXTROutput.hpp"
+#include "include/outputs/WAVOutput.hpp"
+
+#include "include/timers/RealTimeTimer.hpp"
+#include "include/timers/StepTimer.hpp"
+
+#include "include/tones/basic.hpp"
+#include "include/tones/synthesizers.hpp"
