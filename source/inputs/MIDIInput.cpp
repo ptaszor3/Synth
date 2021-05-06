@@ -23,7 +23,7 @@ namespace inputs {
 	}
 
 	void MIDIInput::update() {
-		if(poll(pfd, npfd, 100) > 0) {
+		//if(poll(pfd, npfd, 100) > 0) {
 			do {
 				snd_seq_event_input(seq_handle, &event);
 				switch(event->type) {
@@ -36,8 +36,7 @@ namespace inputs {
 						instrument->stop(note_ids[event->data.note.note]);
 					break;
 				}
-				snd_seq_free_event(event);
 			} while(snd_seq_event_input_pending(seq_handle, 0) > 0);
-		}
+		//}
 	}
 }

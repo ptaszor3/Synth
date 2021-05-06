@@ -60,17 +60,14 @@ public:
 	public:
 		const char* what() const noexcept {return "The NoteId given in \"stop_playing\()\" is inappropriate";}
 	};
-
 	class MissingTone_exception :public std::exception {
 	public:
 		const char* what() const noexcept {return "Sample is ordered with no tone specified";}
 	};
-
 	class MissingEnvelope_exception :public std::exception {
 	public:
 		const char* what() const noexcept {return "Sample is ordered with no envelope specified";}
 	};
-
 	class MissingTimer_exception :public std::exception {
 	public:
 		const char* what() const noexcept {return "Sample is ordered with no timer specified";}

@@ -3,12 +3,12 @@ OBJECTS = ./build/DoubleSeconds.o ./build/Instrument.o ./build/StandardNotes.o .
 CPPFLAGS = -std=c++17
 
 lib: $(OBJECTS)
-	ar rvs libsynth.a $(OBJECTS)
+	ar rvs libsynthall.a $(OBJECTS)
 
 ./build/%.o: ./source/%.cpp ./include/%.hpp
 	g++ $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
-git: libsynth.a
+git: libsynthall.a
 	make clean
 	git add .
 	git commit
@@ -21,4 +21,4 @@ cc:
 clean: 
 	rm ./build/*.o
 	rm ./build/*/*.o
-	rm libsynth.a
+	rm libsynthall.a
