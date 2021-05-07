@@ -1,3 +1,4 @@
+#pragma once
 #include "../Instrument.hpp"
 
 #include <alsa/asoundlib.h>
@@ -15,7 +16,7 @@ namespace outputs {
 
 		DoubleSeconds duration_to_last_write;
 	public:
-		snd_pcm_uframes_t buffer_size{1024};
+		snd_pcm_uframes_t buffer_size{512};
 		snd_pcm_uframes_t period_size{64};
 		const char* device_name{"default"};
 		unsigned int rate{44100};
@@ -24,6 +25,7 @@ namespace outputs {
 		Instrument* instrument{nullptr};
 
 		ALSAOutputStream() = default;
+		ALSAOutputStream(Instrument* instrument);
 		~ALSAOutputStream();
 
 		void open();

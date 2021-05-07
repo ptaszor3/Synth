@@ -1,3 +1,4 @@
+#pragma once
 #include "../Instrument.hpp"
 
 #include <alsa/asoundlib.h>

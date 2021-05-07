@@ -1,6 +1,9 @@
 #include "../../include/outputs/ALSAOutputStream.hpp"
 
 namespace outputs {
+	ALSAOutputStream::ALSAOutputStream(Instrument* c_instrument) 
+	:instrument{c_instrument} {}
+
 	void ALSAOutputStream::check_if_errorus(const int error_code) {
 		if(error_code < 0)
 			throw WriteError_exception(error_code);
@@ -43,7 +46,7 @@ namespace outputs {
 	}
 
 	void ALSAOutputStream::update() {
-		if(std::abs(instrument->timer->get_duration_from_start().count() - duration_to_last_write.count()) > 0.010)
+		if(std::abs(instrument->timer->get_duration_from_start().count() - duration_to_last_write.count()) > 0.020)
 			duration_to_last_write = instrument->timer->get_duration_from_start();
 		float* samples = new float[period_size];
 		for(int i = 0; i < period_size; i++)
