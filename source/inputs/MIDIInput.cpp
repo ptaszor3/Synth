@@ -1,6 +1,8 @@
 #include "../../include/inputs/MIDIInput.hpp"
 #include "../../include/StandardNotes.hpp"
 
+#include <functional>
+
 namespace inputs {
 	MIDIInput::MIDIInput(Instrument* c_instrument) 
 	:instrument{c_instrument}, subscription_handle{nullptr} {
@@ -19,10 +21,14 @@ namespace inputs {
 
 		destination.port = 0;
 		destination.client = snd_seq_client_id(seq_handle);
+
+		updating_thread = new std::thread(update_midi, std::ref(*this));
 	}
 
 	MIDIInput::~MIDIInput() {
 		snd_seq_close(seq_handle);
+		disconnect();
+		delete updating_thread;
 	}
 
 	void MIDIInput::update() {
@@ -41,6 +47,12 @@ namespace inputs {
 		} while(snd_seq_event_input_pending(seq_handle, 0) > 0);
 	}
 
+	void MIDIInput::update_midi(MIDIInput& that) {
+		while(true)
+			if(that.can_run)
+				that.MIDIInput::update();
+	}
+
 	void MIDIInput::connect(int source_id) {
 		disconnect();
 		
@@ -48,21 +60,27 @@ namespace inputs {
 		sender.client = source_id;
 		sender.port = 0;
 
-		snd_seq_port_subscribe_alloca(&subscription_handle);
+		snd_seq_port_subscribe_malloc(&subscription_handle);
 		snd_seq_port_subscribe_set_sender(subscription_handle, &sender);
 		snd_seq_port_subscribe_set_dest(subscription_handle, &destination);
 		snd_seq_port_subscribe_set_queue(subscription_handle, 1);
 		snd_seq_port_subscribe_set_time_update(subscription_handle, 1);
 		snd_seq_port_subscribe_set_time_real(subscription_handle, 1);
-		snd_seq_subscribe_port(seq_handle, subscription_handle);
+		if(snd_seq_subscribe_port(seq_handle, subscription_handle) < 0)
+			throw ErrorWhileConnecting_exception();
+
+		can_run = true;
 	}
 
 	void MIDIInput::disconnect() {
+		can_run = false;
+
 		if(subscription_handle) {
 			snd_seq_unsubscribe_port(seq_handle, subscription_handle);
 			snd_seq_port_subscribe_free(subscription_handle);
 			subscription_handle = nullptr;
 		}
+
 	}
 
 	std::map<std::string, int> MIDIInput::get_all_inputs() {
