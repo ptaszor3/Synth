@@ -15,6 +15,7 @@
 
 #include "include/effects/SynchronizedTremolo.hpp"
 #include "include/effects/SynchronizedVibrato.hpp"
+#include "include/effects/Vibrato.hpp"
 #include "include/effects/UnsynchronizedTremolo.hpp"
 #include "include/effects/UnsynchronizedVibrato.hpp"
 #include "include/effects/VolumeControl.hpp"
