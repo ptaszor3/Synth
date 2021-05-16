@@ -41,7 +41,10 @@ namespace inputs {
 					note_ids[event->data.note.note] = instrument->play(Note(standard_notes::midi_notation[event->data.note.note], instrument->timer->get_duration_from_start(), 0_ds, event->data.note.velocity / static_cast<double>(std::numeric_limits<unsigned char>::max())));
 				break;
 				case SND_SEQ_EVENT_NOTEOFF:
-					instrument->stop(note_ids[event->data.note.note]);
+					try {
+						instrument->stop(note_ids[event->data.note.note]);
+					}
+					catch(...){}
 				break;
 			}
 		} while(snd_seq_event_input_pending(seq_handle, 0) > 0);
@@ -68,10 +71,6 @@ namespace inputs {
 		snd_seq_port_subscribe_set_time_real(subscription_handle, 1);
 		if(snd_seq_subscribe_port(seq_handle, subscription_handle) < 0)
 			throw ErrorWhileConnecting_exception();
-
-		do {
-			snd_seq_event_input(seq_handle, &event);
-		} while(snd_seq_event_input_pending(seq_handle, 0) > 0);
 		
 		can_run = true;
 	}
