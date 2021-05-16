@@ -2,7 +2,7 @@ OBJECTS = ./build/DoubleSeconds.o ./build/Instrument.o ./build/StandardNotes.o .
 
 CPPFLAGS = -std=c++17
 
-lib: $(OBJECTS)
+libsynthall.a: $(OBJECTS)
 	ar rvs libsynthall.a $(OBJECTS)
 
 ./build/%.o: ./source/%.cpp ./include/%.hpp
@@ -16,7 +16,7 @@ git: libsynthall.a
 
 cc:
 	clear
-	make lib
+	make libsynthall.a
 
 clean: 
 	rm ./build/*.o

@@ -69,6 +69,10 @@ namespace inputs {
 		if(snd_seq_subscribe_port(seq_handle, subscription_handle) < 0)
 			throw ErrorWhileConnecting_exception();
 
+		do {
+			snd_seq_event_input(seq_handle, &event);
+		} while(snd_seq_event_input_pending(seq_handle, 0) > 0);
+		
 		can_run = true;
 	}
 
