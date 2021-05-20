@@ -83,9 +83,24 @@ namespace outputs {
 		}
 	}
 
+	void ALSAOutputStream::start() {
+		if(!update_loop_thread)
+			update_loop_thread = new std::thread(update_loop, this);
+	}
+
+	void ALSAOutputStream::stop() {
+		if(update_loop_thread)
+			delete update_loop_thread;
+	}
+
 	ALSAOutputStream::~ALSAOutputStream() {
 		close();
 		snd_pcm_hw_params_free(hardware_parameters);
 		snd_pcm_sw_params_free(software_parameters);
+	}
+
+	void update_loop(ALSAOutputStream* stream) {
+		while(true) 
+			stream->update();
 	}
 }

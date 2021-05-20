@@ -4,6 +4,7 @@
 #include <alsa/asoundlib.h>
 #include <exception>
 #include <string>
+#include <thread>
 
 namespace outputs {
 	class ALSAOutputStream {
@@ -15,6 +16,8 @@ namespace outputs {
 		static void check_if_errorus(int error_code);
 
 		DoubleSeconds duration_to_last_write;
+		std::thread* update_loop_thread{nullptr};
+
 	public:
 		snd_pcm_uframes_t buffer_size{512};
 		snd_pcm_uframes_t period_size{64};
@@ -22,6 +25,7 @@ namespace outputs {
 		unsigned int rate{44100};
 		snd_pcm_format_t format{SND_PCM_FORMAT_FLOAT};
 		unsigned int channels{1};
+
 		Instrument* instrument{nullptr};
 
 		ALSAOutputStream() = default;
@@ -31,6 +35,8 @@ namespace outputs {
 		void open();
 		void close();
 		void update();
+		void start();
+		void stop();
 		
 		class WriteError_exception {
 		public:
@@ -45,4 +51,6 @@ namespace outputs {
 			}
 		};
 	};
+
+	void update_loop(ALSAOutputStream* stream);
 }
