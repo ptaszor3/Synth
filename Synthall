@@ -18,6 +18,7 @@
 #include "include/effects/Vibrato.hpp"
 #include "include/effects/UnsynchronizedTremolo.hpp"
 #include "include/effects/UnsynchronizedVibrato.hpp"
+#inlcude "include/effects/Tremolo.hpp"
 #include "include/effects/VolumeControl.hpp"
 
 #include "include/envelopes/arsd.hpp"
