@@ -41,6 +41,7 @@ namespace outputs {
 	}
 
 	void ALSAOutputStream::close() {
+		stop();
 		check_if_errorus(snd_pcm_drop(stream_handle));
 		check_if_errorus(snd_pcm_close(stream_handle));
 	}
@@ -84,12 +85,15 @@ namespace outputs {
 	}
 
 	void ALSAOutputStream::start() {
+		should_loop_be_running = true;
 		if(!update_loop_thread)
 			update_loop_thread = new std::thread(update_loop, this);
 	}
 
 	void ALSAOutputStream::stop() {
 		if(update_loop_thread) {
+			should_loop_be_running = false;
+			update_loop_thread->join();
 			delete update_loop_thread;
 			update_loop_thread = nullptr;
 		}
@@ -103,7 +107,7 @@ namespace outputs {
 	}
 
 	void update_loop(ALSAOutputStream* stream) {
-		while(true) 
+		while(stream->should_loop_be_running) 
 			stream->update();
 	}
 }

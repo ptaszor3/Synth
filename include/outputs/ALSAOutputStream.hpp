@@ -17,7 +17,7 @@ namespace outputs {
 
 		DoubleSeconds duration_to_last_write;
 		std::thread* update_loop_thread{nullptr};
-
+		bool should_loop_be_running;
 	public:
 		snd_pcm_uframes_t buffer_size{512};
 		snd_pcm_uframes_t period_size{64};
@@ -50,6 +50,8 @@ namespace outputs {
 				return buffer.c_str();
 			}
 		};
+
+		friend void update_loop(ALSAOutputStream*);
 	};
 
 	void update_loop(ALSAOutputStream* stream);
