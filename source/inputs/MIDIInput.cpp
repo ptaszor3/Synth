@@ -26,9 +26,11 @@ namespace inputs {
 	}
 
 	MIDIInput::~MIDIInput() {
-		snd_seq_close(seq_handle);
-		disconnect();
+		stop = true;
+		updating_thread->join();
 		delete updating_thread;
+		disconnect();
+		snd_seq_close(seq_handle);
 	}
 
 	void MIDIInput::update() {
@@ -51,7 +53,7 @@ namespace inputs {
 	}
 
 	void MIDIInput::update_midi(MIDIInput& that) {
-		while(true)
+		while(!that.stop)
 			if(that.can_run)
 				that.MIDIInput::update();
 	}
@@ -83,7 +85,6 @@ namespace inputs {
 			snd_seq_port_subscribe_free(subscription_handle);
 			subscription_handle = nullptr;
 		}
-
 	}
 
 	std::map<std::string, int> MIDIInput::get_all_inputs() {
@@ -106,4 +107,4 @@ namespace inputs {
 
 		return result_buffer;
 	}
-}
+ }

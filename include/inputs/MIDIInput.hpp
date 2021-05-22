@@ -21,6 +21,7 @@ namespace inputs {
 
 		std::thread* updating_thread;
 		bool can_run{false};
+		bool stop{false};
 
 		static void update_midi(MIDIInput&);
 	public:

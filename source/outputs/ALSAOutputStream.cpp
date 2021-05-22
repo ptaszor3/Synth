@@ -89,11 +89,14 @@ namespace outputs {
 	}
 
 	void ALSAOutputStream::stop() {
-		if(update_loop_thread)
+		if(update_loop_thread) {
 			delete update_loop_thread;
+			update_loop_thread = nullptr;
+		}
 	}
 
 	ALSAOutputStream::~ALSAOutputStream() {
+		stop();
 		close();
 		snd_pcm_hw_params_free(hardware_parameters);
 		snd_pcm_sw_params_free(software_parameters);
