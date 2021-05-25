@@ -1,0 +1,61 @@
+clear
+[H[2J[3Jmake libsynthall.a
+make[1]: Entering directory '/home/ptaszor3/Programming/Cpp/Synthall'
+g++  -std=c++17 -c source/effects/Filter.cpp -o build/effects/Filter.o
+source/effects/Filter.cpp: In constructor ‘effects::Filter::Filter(double, double, Signal*, Frequency, effects::SynchronizationType, double, double, Signal*, Frequency, Frequency, effects::SynchronizationType)’:
+source/effects/Filter.cpp:6:2: error: multiple initializations given for ‘effects::Filter::steepness_signal’
+    6 |  Filter::Filter(double c_cutoff_value, double c_cutoff_value_max_deviation, Signal* c_cutoff_value_signal, Frequency c_cutoff_value_signal_frequency, SynchronizationType c_cutoff_value_signal_synchronization_type, double c_steepness, double c_steepness_max_deviation, Signal* steepness_signal , Frequency c_steepness_signal, Frequency c_steepness_signal_frequency, SynchronizationType c_steepness_signal_synchronization_type) :cutoff_value{c_cutoff_value}, cutoff_value_max_deviation{c_cutoff_value_max_deviation}, cutoff_value_signal{c_cutoff_value_signal}, cutoff_value_signal_frequency{c_cutoff_value_signal_frequency}, cutoff_value_signal_synchronization_type{c_cutoff_value_signal_synchronization_type}, steepness{c_steepness}, steepness_max_deviation{c_steepness_max_deviation}, steepness_signal{steepness_signal}, steepness_signal{c_steepness_signal}, steepness_signal_frequency{c_steepness_signal_frequency}, steepness_signal_synchronization_type{c_steepness_signal_synchronization_type} {}
+      |  ^~~~~~
+source/effects/Filter.cpp:6:995: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘Signal*’ in initialization
+    6 |  Filter::Filter(double c_cutoff_value, double c_cutoff_value_max_deviation, Signal* c_cutoff_value_signal, Frequency c_cutoff_value_signal_frequency, SynchronizationType c_cutoff_value_signal_synchronization_type, double c_steepness, double c_steepness_max_deviation, Signal* steepness_signal , Frequency c_steepness_signal, Frequency c_steepness_signal_frequency, SynchronizationType c_steepness_signal_synchronization_type) :cutoff_value{c_cutoff_value}, cutoff_value_max_deviation{c_cutoff_value_max_deviation}, cutoff_value_signal{c_cutoff_value_signal}, cutoff_value_signal_frequency{c_cutoff_value_signal_frequency}, cutoff_value_signal_synchronization_type{c_cutoff_value_signal_synchronization_type}, steepness{c_steepness}, steepness_max_deviation{c_steepness_max_deviation}, steepness_signal{steepness_signal}, steepness_signal{c_steepness_signal}, steepness_signal_frequency{c_steepness_signal_frequency}, steepness_signal_synchronization_type{c_steepness_signal_synchronization_type} {}
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+source/effects/Filter.cpp: In member function ‘Sample effects::Filter::callback(Note, AuxiliarySampleData&, Instrument*, DoubleSeconds, int)’:
+source/effects/Filter.cpp:11:129: error: no matching function for call to ‘Instrument::callback_whole_sample_effect_prior_to(Note&, AuxiliarySampleData&, DoubleSeconds&, int&)’
+   11 |   Sample difference = instrument->callback_whole_sample_effect_prior_to(note, sample_data, duration_from_start, effects_position) - sample_data.custom["last_sample"];
+      |                                                                                                                                 ^
+In file included from source/effects/../../include/effects/../SingleSampleEffect.hpp:16,
+                 from source/effects/../../include/effects/Filter.hpp:2,
+                 from source/effects/Filter.cpp:1:
+source/effects/../../include/effects/../Instrument.hpp:47:9: note: candidate: ‘Sample Instrument::callback_whole_sample_effect_prior_to(DoubleSeconds, int)’
+   47 |  Sample callback_whole_sample_effect_prior_to(DoubleSeconds duration_from_start, int effects_position);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+source/effects/../../include/effects/../Instrument.hpp:47:9: note:   candidate expects 2 arguments, 4 provided
+source/effects/Filter.cpp:18:37: error: ‘steepness_value_signal’ was not declared in this scope; did you mean ‘steepness_signal’?
+   18 |   double actuall_steepness_value  = steepness_value_signal->callback(Note(steepness_value_signal_frequency, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.begin_time : 0_ds, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.end_time : 0_ds, note.volume), duration_from_start) * steepness_value_max_deviation + steepness_value;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~
+      |                                     steepness_signal
+source/effects/Filter.cpp:18:75: error: ‘steepness_value_signal_frequency’ was not declared in this scope; did you mean ‘steepness_signal_frequency’?
+   18 |   double actuall_steepness_value  = steepness_value_signal->callback(Note(steepness_value_signal_frequency, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.begin_time : 0_ds, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.end_time : 0_ds, note.volume), duration_from_start) * steepness_value_max_deviation + steepness_value;
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                           steepness_signal_frequency
+source/effects/Filter.cpp:18:109: error: ‘steepness_value_signal_synchronization_type’ was not declared in this scope; did you mean ‘steepness_signal_synchronization_type’?
+   18 |   double actuall_steepness_value  = steepness_value_signal->callback(Note(steepness_value_signal_frequency, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.begin_time : 0_ds, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.end_time : 0_ds, note.volume), duration_from_start) * steepness_value_max_deviation + steepness_value;
+      |                                                                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                                                             steepness_signal_synchronization_type
+source/effects/Filter.cpp:18:358: error: ‘steepness_value_max_deviation’ was not declared in this scope; did you mean ‘steepness_max_deviation’?
+   18 |   double actuall_steepness_value  = steepness_value_signal->callback(Note(steepness_value_signal_frequency, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.begin_time : 0_ds, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.end_time : 0_ds, note.volume), duration_from_start) * steepness_value_max_deviation + steepness_value;
+      |                                                                                                                                                                                                                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                                                                                                                                                                                                                                                                                                                      steepness_max_deviation
+source/effects/Filter.cpp:18:390: error: ‘steepness_value’ was not declared in this scope; did you mean ‘actuall_steepness_value’?
+   18 |   double actuall_steepness_value  = steepness_value_signal->callback(Note(steepness_value_signal_frequency, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.begin_time : 0_ds, steepness_value_signal_synchronization_type == SynchronizationType::Synchronized ? note.end_time : 0_ds, note.volume), duration_from_start) * steepness_value_max_deviation + steepness_value;
+      |                                                                                                                                                                                                                                                                                                                                                                                                      ^~~~~~~~~~~~~~~
+      |                                                                                                                                                                                                                                                                                                                                                                                                      actuall_steepness_value
+source/effects/Filter.cpp:22:40: error: ‘actual_cutoff_value’ was not declared in this scope; did you mean ‘actuall_cutoff_value’?
+   22 |    present_intensity *= -std::pow((1 / actual_cutoff_value * difference), actual_steepness_value) + 2;
+      |                                        ^~~~~~~~~~~~~~~~~~~
+      |                                        actuall_cutoff_value
+source/effects/Filter.cpp:22:75: error: ‘actual_steepness_value’ was not declared in this scope; did you mean ‘actuall_steepness_value’?
+   22 |    present_intensity *= -std::pow((1 / actual_cutoff_value * difference), actual_steepness_value) + 2;
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~
+      |                                                                           actuall_steepness_value
+source/effects/Filter.cpp:24:38: error: ‘actual_cutoff_value’ was not declared in this scope; did you mean ‘actuall_cutoff_value’?
+   24 |    present_intensity *= std::pow(1 / actual_cutoff_value * difference + 2, actual_steepness_value);
+      |                                      ^~~~~~~~~~~~~~~~~~~
+      |                                      actuall_cutoff_value
+source/effects/Filter.cpp:24:76: error: ‘actual_steepness_value’ was not declared in this scope; did you mean ‘actuall_steepness_value’?
+   24 |    present_intensity *= std::pow(1 / actual_cutoff_value * difference + 2, actual_steepness_value);
+      |                                                                            ^~~~~~~~~~~~~~~~~~~~~~
+      |                                                                            actuall_steepness_value
+make[1]: *** [makefile:9: build/effects/Filter.o] Error 1
+make[1]: Leaving directory '/home/ptaszor3/Programming/Cpp/Synthall'
+make: *** [makefile:19: cc] Error 2

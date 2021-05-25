@@ -1,0 +1,5 @@
+clear
+[H[2J[3Jmake libsynthall.a
+make[1]: Entering directory '/home/ptaszor3/Programming/Cpp/Synthall'
+g++  -std=c++17 -c source/effects/Filter.cpp -o build/effects/Filter.o
+make[1]: Leaving directory '/home/ptaszor3/Programming/Cpp/Synthall'
